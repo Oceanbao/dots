@@ -239,9 +239,6 @@ ln -sfn ~/dots/tmux.conf ~/.tmux.conf
 # fzf
 rm -rf ~/.fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
-
-# LSP Install
-source ~/dots/lsp_install.sh
 EOF
 }
 
@@ -285,6 +282,10 @@ nvm install v14.16.1
 
 # neovim
 npm install -g neovim
+
+# LSP Install
+source ~/dots/lsp_install.sh
+
 EOF
 }
 
