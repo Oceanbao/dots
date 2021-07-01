@@ -119,8 +119,7 @@ init() {
   then
     cd /home/"$USER" && \
       dotup && \
-      install_node && \
-      post_init
+      install_node
   else
     cd /home/"$USER" && \
       dotup_base && \
@@ -290,20 +289,22 @@ EOF
 }
 
 
-post_init() {
-  sudo -i -u "$USER" bash << EOF
+post() {
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Post INIT Setup..." "$(printf "%0.1s" ={1..20})"
 
 # neovim
 npm install -g neovim
 
 # LSP Install
-source ~/dots/lsp_install.sh
+npm install -g pyright
+npm install -g typescript typescript-language-server
+npm install -g diagnostic-languageserver
+npm install -g eslint_d prettier
+npm install -g tree-sitter-cli
 
 # Finally, nvim INIT
 nvim --headless +PlugInstall +q
 
-EOF
 }
 
 
@@ -322,6 +323,9 @@ while [[ -n $1 ]]; do
       ;;
     init)
       init
+      ;;
+    post)
+      post
       ;;
     *)
       error_exit "Unknown option $1";
