@@ -100,6 +100,30 @@ nvim_lsp.pyright.setup {
   }
 }
 
+nvim_lsp.bashls.setup {
+  on_attach = on_attach,
+  cmd_env = {
+    GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"
+  },
+  filetypes = { "sh" }
+}
+
+nvim_lsp.gopls.setup {
+  on_attach = on_attach,
+  filetypes = { "go", "gomod" },
+  root_dir = root_pattern("go.mod", ".git")
+}
+
+nvim_lsp.rust_analyzer.setup {
+  on_attach = on_attach,
+  filetypes = { "rust" },
+  root_dir = root_pattern("Cargo.toml", "rust-project.json"),
+  settings = {
+    ["rust-analyzer"] = {}
+  }
+}
+
+
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
@@ -107,7 +131,7 @@ nvim_lsp.tsserver.setup {
 
 nvim_lsp.diagnosticls.setup {
   on_attach = on_attach,
-  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc', 'sh', 'py' },
+  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc', 'sh', 'python' },
   init_options = {
     linters = {
       eslint = {

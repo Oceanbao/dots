@@ -119,10 +119,12 @@ init() {
   then
     cd /home/"$USER" && \
       dotup && \
-      install_node
+      install_node && \
+      post_init
   else
     cd /home/"$USER" && \
-      dotup_base
+      dotup_base && \
+      install_node
   fi
 
 }
@@ -267,6 +269,10 @@ ln -sfn ~/dots/gitconfig ~/.gitconfig
 # tmux
 ln -sfn ~/dots/tmux.conf ~/.tmux.conf
 
+# fzf
+rm -rf ~/.fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+
 EOF
 }
 
@@ -280,11 +286,22 @@ export NVM_DIR=~/.nvm
 . ~/.nvm/nvm.sh
 nvm install v14.16.1
 
+EOF
+}
+
+
+post_init() {
+  sudo -i -u "$USER" bash << EOF
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Post INIT Setup..." "$(printf "%0.1s" ={1..20})"
+
 # neovim
 npm install -g neovim
 
 # LSP Install
 source ~/dots/lsp_install.sh
+
+# Finally, nvim INIT
+nvim --headless +PlugInstall +q
 
 EOF
 }
