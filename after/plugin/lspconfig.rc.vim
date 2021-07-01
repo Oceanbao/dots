@@ -102,6 +102,7 @@ nvim_lsp.pyright.setup {
 
 nvim_lsp.bashls.setup {
   on_attach = on_attach,
+  cmd = { "bash-language-server", "start" },
   cmd_env = {
     GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"
   },

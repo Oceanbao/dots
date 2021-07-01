@@ -303,7 +303,7 @@ npm install -g eslint_d prettier
 npm install -g tree-sitter-cli
 
 # Finally, nvim INIT
-nvim --headless +PlugInstall +q
+# nvim --headless +PlugInstall +q
 
 }
 
