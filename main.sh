@@ -144,6 +144,11 @@ init_user_arch() {
 init_user_ubun() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU LINUX" "$(printf "%0.1s" ={1..20})"
   apt update && apt install -y sudo curl zip wget tmux git zsh manpages-dev build-essential
+  # Install ripgrep
+  TEMP_DEB="$(mktemp)" && \
+    wget -O "$TEMP_DEB" 'https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb' && \
+    dpkg -i "$TEMP_DEB" && \
+    rm -f "$TEMP_DEB"
   # Install exa
   curl https://sh.rustup.rs -sSf | sh
   wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip

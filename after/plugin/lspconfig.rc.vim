@@ -85,10 +85,6 @@ end
 nvim_lsp.pyright.setup {
   on_attach = on_attach,
   filetypes = { "python" },
-  root_dir = function(filename)
-        return util.root_pattern(unpack(root_files))(filename) or
-               util.path.dirname(filename)
-      end;
   settings = {
     python = {
       analysis = {
@@ -112,13 +108,13 @@ nvim_lsp.bashls.setup {
 nvim_lsp.gopls.setup {
   on_attach = on_attach,
   filetypes = { "go", "gomod" },
-  root_dir = root_pattern("go.mod", ".git")
+  root_dir = nvim_lsp.util.root_pattern("go.mod", ".git")
 }
 
 nvim_lsp.rust_analyzer.setup {
   on_attach = on_attach,
   filetypes = { "rust" },
-  root_dir = root_pattern("Cargo.toml", "rust-project.json"),
+  root_dir = nvim_lsp.util.root_pattern("Cargo.toml", "rust-project.json"),
   settings = {
     ["rust-analyzer"] = {}
   }
