@@ -195,6 +195,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 # powerline10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+rm -rf ~/.zshrc
 ln -sfn ~/dots/zshrc ~/.zshrc
 
 # neovim
@@ -237,9 +238,11 @@ ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
 ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
 
 # git
+rm -rf ~/.gitconfig
 ln -sfn ~/dots/gitconfig ~/.gitconfig
 
 # tmux
+rm -rf ~/.tmux.conf
 ln -sfn ~/dots/tmux.conf ~/.tmux.conf
 
 # fzf
