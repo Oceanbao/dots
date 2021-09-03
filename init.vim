@@ -151,7 +151,7 @@ set exrc
 
 let g:python3_host_prog=expand('~/envPY/bin/python')
 
-source $HOME/.config/nvim/themes/onedark.vim
+source ~/.config/nvim/themes/onedark.vim
 
 " Old "{{{
 " ----------------------------------------------------------------------

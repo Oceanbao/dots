@@ -1,0 +1,134 @@
+env:
+  TERM: xterm-256color
+
+window:
+  dimensions:
+    columns: 0
+    lines: 0
+  padding:
+    x: 0
+    y: 0
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: true
+  decorations: full
+  startup_mode: Windowed
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+# Font configuration (changes require restart)
+font:
+  normal:
+    family: "FiraCode Nerd Font"
+    style: Regular
+    # font:
+    #   # Normal (roman) font face
+    #   normal:
+    #     family: FiraCode Nerd Font
+    #     style: Regular
+    #   bold:
+    #     family: FiraCode Nerd Font
+    #     style: Bold
+    #   italic:
+    #     family: FiraCode Nerd Font
+    #     style: Italic
+    #   size: 13.0
+    #   offset:
+    #     x: 0
+    #     y: 0
+    #   glyph_offset:
+    #     x: 0
+    #     y: 0
+
+# If `true`, bold text is drawn using the bright color variants.
+draw_bold_text_with_bright_colors: true
+
+# Colors (One Dark); if dim colors are not set, they will be calculated
+# automatically based on the `normal` colors
+#colors:
+#    primary:
+#        background: '#24272e'
+#        foreground: '#abb2bf'
+#    cursor:
+#        text: '#0b0b0b'    # black
+#        cursor: '#528bff'
+#    vi_mode_cursor:
+#        text: '#abb2bf'
+#        cursor: '#333841'
+#    selection:
+#        text: '#abb2bf'
+#        background: '#3e4452'
+#    search:
+#        matches:
+#            foreground: '#3e4452'
+#            background: '#e5c07b'
+#        bar:
+#            background: '#282c34'
+#            foreground: '#abb2bf'
+#    normal:
+#        black:   '#24272e'
+#        red:     '#e06c75'
+#        green:   '#98c379'
+#        yellow:  '#e5c07b'
+#        blue:    '#61afef'
+#        magenta: '#c678dd'
+#        cyan:    '#56b6c2'
+#        white:   '#abb2bf'
+#    bright:
+#        black:   '#3e4452'
+#        red:     '#be5046'
+#        green:   '#98c379'
+#        yellow:  '#d19a66'
+#        blue:    '#61afef'
+#        magenta: '#c678dd'
+#        cyan:    '#56b6c2'
+#        white:   '#5c6370'
+
+# Colors (Hyper)
+colors:
+  # Default colors
+  primary:
+    background: '0x000000'
+    foreground: '0xffffff'
+  cursor:
+    text: '0xF81CE5'
+    cursor: '0xffffff'
+
+  # Normal colors
+  normal:
+    black:   '0x000000'
+    red:     '0xfe0100'
+    green:   '0x33ff00'
+    yellow:  '0xfeff00'
+    blue:    '0x0066ff'
+    magenta: '0xcc00ff'
+    cyan:    '0x00ffff'
+    white:   '0xd0d0d0'
+
+  # Bright colors
+  bright:
+    black:   '0x808080'
+    red:     '0xfe0100'
+    green:   '0x33ff00'
+    yellow:  '0xfeff00'
+    blue:    '0x0066ff'
+    magenta: '0xcc00ff'
+    cyan:    '0x00ffff'
+    white:   '0xFFFFFF'
+
+mouse:
+  hide_when_typing: false
+
+selection:
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
+  save_to_clipboard: true
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+# Live config reload (changes require restart)
+live_config_reload: true
+

@@ -111,6 +111,8 @@ init() {
   elif [[ "$OS_TYPE" == *"Arch"* ]]
   then
     init_user_arch
+  else
+    init_user_ubun
   fi
 
   center "INIT dotfiles"
