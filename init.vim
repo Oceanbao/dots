@@ -99,13 +99,9 @@ au BufNewFile,BufRead *.es6 setf javascript
 au BufNewFile,BufRead *.tsx setf typescriptreact
 " Markdown
 au BufNewFile,BufRead *.md set filetype=markdown
-" Flow
-au BufNewFile,BufRead *.flow set filetype=javascript
 
 set suffixesadd=.js,.es,.jsx,.json,.css,.less,.sass,.styl,.php,.py,.md
 
-autocmd FileType coffee setlocal shiftwidth=2 tabstop=2
-autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
 "}}}
@@ -136,7 +132,7 @@ if exists("&termguicolors") && exists("&winblend")
   set pumblend=5
   set background=dark
   " Use NeoSolarized
-  let g:neosolarized_termtrans=1
+  " let g:neosolarized_termtrans=1
 endif
 
 "}}}
@@ -151,7 +147,7 @@ set exrc
 
 let g:python3_host_prog=expand('~/envPY/bin/python')
 
-source ~/.config/nvim/themes/onedark.vim
+" source $HOME/.config/nvim/themes/onedark.vim
 
 " Old "{{{
 " ----------------------------------------------------------------------
@@ -252,6 +248,7 @@ set backspace=indent,eol,start
 autocmd FileType python set foldmethod=indent
 "use space to open folds
 nnoremap <space> za
+
 "----------Stop python PEP 8 stuff--------------
 
 " Highlight VISUAL selection
@@ -272,7 +269,7 @@ au BufNewFile,BufRead *.tsx setf typescript
 au BufNewFile,BufRead *.md set filetype=markdown
 
 
-colorscheme onedark
+colorscheme codedark
 
 " source ~/.vimrc.lightline
 

@@ -76,11 +76,23 @@ autocmd FileType defx call s:defx_my_settings()
 	  \ defx#do_action('change_vim_cwd')
 	endfunction
 
+call defx#custom#option('_', {
+	\ 'winwidth': 30,
+	\ 'split': 'vertical',
+	\ 'direction': 'topleft',
+	\ 'show_ignored_files': 0,
+	\ 'buffer_name': 'defxplorer',
+	\ 'toggle': 1,
+	\ 'columns': 'icon:indent:icons:filename',
+	\ 'resume': 1,
+	\ })
+
 call defx#custom#column('icon', {
-      \ 'directory_icon': '▸',
-      \ 'opened_icon': '▾',
-      \ 'root_icon': ' ',
-      \ })
+	\ 'directory_icon': '▸',
+	\ 'opened_icon': '▾',
+	\ 'root_icon': ' ',
+	\ })
+
 call defx#custom#column('git', 'indicators', {
   \ 'Modified'  : 'M',
   \ 'Staged'    : '✚',
@@ -91,13 +103,4 @@ call defx#custom#column('git', 'indicators', {
   \ 'Deleted'   : '✖',
   \ 'Unknown'   : '?'
   \ })
-call defx#custom#option('_', {
-      \ 'winwidth': 30,
-      \ 'split': 'vertical',
-      \ 'direction': 'topleft',
-      \ 'show_ignored_files': 0,
-      \ 'buffer_name': 'defxplorer',
-      \ 'toggle': 1,
-      \ 'columns': 'icons:indent:filename:type',
-      \ 'resume': 1,
-      \ })
+

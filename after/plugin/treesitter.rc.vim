@@ -17,13 +17,13 @@ require'nvim-treesitter.configs'.setup {
     "tsx",
     "toml",
     "fish",
-    "php",
     "json",
     "yaml",
     "swift",
     "html",
     "scss",
-    "python"
+    "python",
+    "rust",
   },
 }
 
