@@ -150,15 +150,20 @@ init_user_ubun() {
   wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip
   unzip exa-linux-x86_64-0.8.0.zip
   mv exa-linux-x86_64 /usr/local/bin/exa
-  if [[ "$FULL" == "Y" ]]; then
-    # Install Python3.8
-    if [[ ! $(command -v python3.8) ]]; then
-      apt install -y software-properties-common python3-pip
-      add-apt-repository ppa:deadsnakes/ppa
-      apt install -y python3.8
-      apt install -y python3.8-venv
+  # Install python
+  if [[ ! $(command -v python3.8) || ! $(command -v python3) ]]; then
+    apt install -y software-properties-common python3-pip
+    EXIT_CODE=0
+    add-apt-repository ppa:deadsnakes/ppa
+    apt install -y python3.8 python3.8-venv || EXIT_CODE=$!
+    if (( $EXIT_CODE != 0 )); then
+      EXIT_CODE=0
+      apt install -y python3 python3-pip python3-venv libssl-dev libffi-dev python3-dev || EXIT_CODE=$!
+      if (( $EXIT_CODE != 0 )); then
+        exit 1
+      fi
     fi
-    ln -sfn $(command -v python3.8) /usr/bin/python
+    ln -sfn $(command -v python3.8) /usr/bin/python || ln -sfn $(command -v python3) /usr/bin/python
   fi
   # Set user shell
   if [[ "$NEW" == "Y" ]]; then
@@ -176,7 +181,7 @@ set -eo pipefail
 git clone https://github.com/Oceanbao/dots.git
 
 # Fix up pip and venv
-python -m pip install pip
+python -m pip install pip || true
 python -m venv ~/envPY
 source ~/envPY/bin/activate
 pip install -U pip
