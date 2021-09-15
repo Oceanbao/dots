@@ -98,9 +98,6 @@ init() {
     read USER
   fi
 
-  printf "FULL DOTUP? <Y/N>\n"
-  read FULL
-
   OS_TYPE="$(cat /etc/issue)"
 
   if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
@@ -113,15 +110,9 @@ init() {
 
   center "INIT dotfiles"
 
-  if [[ "$FULL" == "Y" ]]; then
-    cd /home/"$USER" && \
-      dotup && \
-      install_node
-  else
-    cd /home/"$USER" && \
-      dotup_base && \
-      install_node
-  fi
+  cd /home/"$USER" && \
+    dotup && \
+    install_node
 
 }
 
