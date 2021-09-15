@@ -90,12 +90,10 @@ init() {
   printf "CREATE NEW USER? <Y/N>\n"
   read NEW
 
-  if [[ "$NEW" == "Y" ]]
-  then
+  if [[ "$NEW" == "Y" ]]; then
     printf "ENTER <USER>: \n"
     read USER
-  elif [[ "$NEW" == "N" ]]
-  then
+  elif [[ "$NEW" == "N" ]]; then
     printf "ENTER <USER>: \n"
     read USER
   fi
@@ -105,11 +103,9 @@ init() {
 
   OS_TYPE="$(cat /etc/issue)"
 
-  if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]
-  then
+  if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
     init_user_ubun
-  elif [[ "$OS_TYPE" == *"Arch"* ]]
-  then
+  elif [[ "$OS_TYPE" == *"Arch"* ]]; then
     init_user_arch
   else
     init_user_ubun
@@ -117,8 +113,7 @@ init() {
 
   center "INIT dotfiles"
 
-  if [[ "$FULL" == "Y" ]]
-  then
+  if [[ "$FULL" == "Y" ]]; then
     cd /home/"$USER" && \
       dotup && \
       install_node
@@ -135,8 +130,7 @@ init_user_arch() {
   pacman -Syu && yes | pacman -S sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
   # Install python3
   yes | pacman -S python python-pip python-setuptools || true
-  if [[ "$NEW" == "Y" ]]
-  then
+  if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g wheel "$USER"
     passwd "$USER"
     sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
@@ -156,18 +150,18 @@ init_user_ubun() {
   wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip
   unzip exa-linux-x86_64-0.8.0.zip
   mv exa-linux-x86_64 /usr/local/bin/exa
-  if [[ "$FULL" == "Y" ]]
-  then
-    # Install Python3
-    apt install -y software-properties-common python3-pip
-    add-apt-repository ppa:deadsnakes/ppa
-    apt install -y python3.8
+  if [[ "$FULL" == "Y" ]]; then
+    # Install Python3.8
+    if [[ ! $(command -v python3.8) ]]; then
+      apt install -y software-properties-common python3-pip
+      add-apt-repository ppa:deadsnakes/ppa
+      apt install -y python3.8
+      apt install -y python3.8-venv
+    fi
     ln -sfn $(command -v python3.8) /usr/bin/python
-    apt install -y python3.8-venv
   fi
   # Set user shell
-  if [[ "$NEW" == "Y" ]]
-  then
+  if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g sudo "$USER"
     passwd "$USER"
   else
@@ -185,6 +179,7 @@ git clone https://github.com/Oceanbao/dots.git
 python -m pip install pip
 python -m venv ~/envPY
 source ~/envPY/bin/activate
+pip install -U pip
 pip install pynvim
 
 # OMZ
