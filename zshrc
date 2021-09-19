@@ -151,8 +151,5 @@ export TERM=xterm-256color
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Created by `pipx` on 2021-05-09 08:10:39
-export PATH="$PATH:/home/dele/.local/bin"
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

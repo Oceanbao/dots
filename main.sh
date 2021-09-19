@@ -307,13 +307,16 @@ npm install -g neovim
 
 # LSP Install
 npm install -g pyright
+npm install -g bash-language-server
 npm install -g typescript typescript-language-server
 npm install -g diagnostic-languageserver
 npm install -g eslint_d prettier
 npm install -g tree-sitter-cli
+curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
+chmod +x ~/.local/bin/rust-analyzer
 
 # Finally, nvim INIT
-# nvim --headless +PlugInstall +q
+#nvim '+PlugInstall | qa'
 
 }
 

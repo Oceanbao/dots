@@ -186,10 +186,6 @@ set omnifunc=syntaxcomplete#Complete
 " If installed using git
 set rtp+=~/.fzf
 
-" Buffer Explorer
-nnoremap <C-e> :set nomore <Bar> :ls <Bar> :set more <CR>:b<Space>
-
-
 "---------Markdonw---------
 
 " disable header folding

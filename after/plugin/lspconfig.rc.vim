@@ -107,6 +107,7 @@ nvim_lsp.bashls.setup {
 
 nvim_lsp.gopls.setup {
   on_attach = on_attach,
+  cmd = { "gopls" },
   filetypes = { "go", "gomod" },
   root_dir = nvim_lsp.util.root_pattern("go.mod", ".git")
 }
@@ -119,7 +120,6 @@ nvim_lsp.rust_analyzer.setup {
     ["rust-analyzer"] = {}
   }
 }
-
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
