@@ -1,9 +1,9 @@
 if !exists('g:loaded_defx') | finish | endif
 
 " Define mappings
-"cnoreabbrev sf Defx -listed -new
-"      \ -columns=indent:mark:icon:icons:filename:git:size
-"      \ -buffer-name=tab`tabpagenr()`<CR>
+" cnoreabbrev sf Defx -listed -new
+"       \ -columns=indent:mark:icon:icons:filename:git:size
+"       \ -buffer-name=tab`tabpagenr()`<CR>
 nnoremap <silent>sf :<C-u>Defx -listed -resume
       \ -columns=indent:mark:icon:icons:filename:git:size
       \ -buffer-name=tab`tabpagenr()`
@@ -76,16 +76,16 @@ autocmd FileType defx call s:defx_my_settings()
 	  \ defx#do_action('change_vim_cwd')
 	endfunction
 
-" call defx#custom#option('_', {
-" 	\ 'winwidth': 30,
-" 	\ 'split': 'vertical',
-" 	\ 'direction': 'topleft',
-" 	\ 'show_ignored_files': 0,
-" 	\ 'buffer_name': 'defxplorer',
-" 	\ 'toggle': 1,
-" 	\ 'columns': 'icon:indent:icons:filename',
-" 	\ 'resume': 1,
-" 	\ })
+call defx#custom#option('_', {
+	\ 'winwidth': 30,
+	\ 'split': 'vertical',
+	\ 'direction': 'topleft',
+	\ 'show_ignored_files': 0,
+	\ 'buffer_name': 'defxplorer',
+	\ 'toggle': 1,
+	\ 'columns': 'icon:indent:icons:filename',
+	\ 'resume': 1,
+	\ })
 
 call defx#custom#column('icon', {
       \ 'directory_icon': '▸',
