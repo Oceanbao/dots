@@ -4,6 +4,8 @@ endif
 
 call plug#begin()
 
+Plug 'dracula/vim', { 'as': 'dracula' }
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'cohama/lexima.vim'

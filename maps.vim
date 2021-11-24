@@ -12,6 +12,9 @@ nnoremap - <C-x>
 " Delete a word backwards
 nnoremap dw vb"_d
 
+" Allow gf to open non-existing files
+map gf :edit <cfile><cr>
+
 " Select all
 nmap <C-a> gg<S-v>G
 

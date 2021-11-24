@@ -265,7 +265,8 @@ au BufNewFile,BufRead *.tsx setf typescript
 au BufNewFile,BufRead *.md set filetype=markdown
 
 
-colorscheme codedark
+" colorscheme codedark
+colorscheme dracula
 
 " source ~/.vimrc.lightline
 
