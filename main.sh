@@ -194,7 +194,7 @@ ln -sfn ~/dots/zshrc ~/.zshrc
 # neovim
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
 
-curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+curl -LO https://github.com/neovim/neovim/releases/download/v0.5.1/nvim.appimage
 chmod u+x nvim.appimage
 ./nvim.appimage --appimage-extract
 sudo rm -rf /squashfs-root
