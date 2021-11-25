@@ -21,6 +21,9 @@ nmap <C-a> gg<S-v>G
 " Save with root permission
 command! W w !sudo tee > /dev/null %
 
+" Bind init COQ
+nnoremap <silent><C-q> :COQnow [-s]<CR>
+
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
   \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>

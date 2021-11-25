@@ -144,10 +144,7 @@ set exrc
 
 " vim: set foldmethod=marker foldlevel=0:
 
-
 let g:python3_host_prog=expand('~/envPY/bin/python')
-
-" source $HOME/.config/nvim/themes/onedark.vim
 
 " Old "{{{
 " ----------------------------------------------------------------------
@@ -266,7 +263,12 @@ au BufNewFile,BufRead *.md set filetype=markdown
 
 
 " colorscheme codedark
-colorscheme dracula
+" source $HOME/.config/nvim/themes/onedark.vim
+
+" colorscheme dracula
+
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
 
 " source ~/.vimrc.lightline
 

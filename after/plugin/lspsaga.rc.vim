@@ -22,5 +22,5 @@ nnoremap <silent> gv <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
 nnoremap <silent> [e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
 nnoremap <silent> ]e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
 
-nnoremap <silent> <C-d> :Lspsaga open_floaterm<CR>
-tnoremap <silent> <C-d> <C-\><C-n>:Lspsaga close_floaterm<CR>
+nnoremap <silent> <C-t> :Lspsaga open_floaterm<CR>
+tnoremap <silent> <C-t> <C-\><C-n>:Lspsaga close_floaterm<CR>

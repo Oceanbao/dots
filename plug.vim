@@ -5,6 +5,11 @@ endif
 call plug#begin()
 
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tomasiser/vim-code-dark'
+Plug 'joshdick/onedark.vim'
+Plug 'ayu-theme/ayu-vim' " or other package manager
+
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
@@ -15,8 +20,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'Yggdroot/indentLine'
 Plug 'dense-analysis/ale'
 Plug 'gcmt/wildfire.vim'
-Plug 'tomasiser/vim-code-dark'
-Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'plasticboy/vim-markdown'
 
