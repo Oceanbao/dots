@@ -225,6 +225,9 @@ ln -sfn ~/dots/after/plugin/tabline.rc.vim ~/.config/nvim/after/plugin/tabline.r
 ln -sfn ~/dots/after/plugin/defx.rc.vim ~/.config/nvim/after/plugin/defx.rc.vim
 ln -sfn ~/dots/after/plugin/lspconfig.rc.vim ~/.config/nvim/after/plugin/lspconfig.rc.vim
 
+# custom lua scripts
+cp -r ~/dots/lua ~/.config/nvim/.
+
 mkdir ~/.config/nvim/themes
 ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
 

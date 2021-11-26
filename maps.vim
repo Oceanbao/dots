@@ -1,5 +1,10 @@
 " Description: Keymaps
 
+"----------------------------------------------------------------------
+" Basic Options
+"----------------------------------------------------------------------
+let mapleader=","         " The <leader> key
+
 nnoremap <S-C-p> "0p
 " Delete without yank
 nnoremap <leader>d "_d
@@ -22,7 +27,7 @@ nmap <C-a> gg<S-v>G
 command! W w !sudo tee > /dev/null %
 
 " Bind init COQ
-nnoremap <silent><C-q> :COQnow [-s]<CR>
+nnoremap <silent><leader><C-q> :COQnow [-s]<CR>
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
@@ -59,18 +64,18 @@ noremap <leader>0 :tablast<cr>
 " Windows
 
 " Split window
-nmap ss :split<Return><C-w>w
-nmap sv :vsplit<Return><C-w>w
+nmap <leader>ss :split<Return><C-w>w
+nmap <leader>sv :vsplit<Return><C-w>w
 " Move window
-map s<left> <C-w>h
-map s<up> <C-w>k
-map s<down> <C-w>j
-map s<right> <C-w>l
-map sh <C-w>h
-map sk <C-w>k
-map sj <C-w>j
-map sl <C-w>l
-map sc <C-w>c
+map <leader>s<left> <C-w>h
+map <leader>s<up> <C-w>k
+map <leader>s<down> <C-w>j
+map <leader>s<right> <C-w>l
+map <leader>sh <C-w>h
+map <leader>sk <C-w>k
+map <leader>sj <C-w>j
+map <leader>sl <C-w>l
+map <leader>sc <C-w>c
 " Resize window
 nmap <C-w><left> <C-w><
 nmap <C-w><right> <C-w>>
@@ -78,4 +83,15 @@ nmap <C-w><up> <C-w>+
 nmap <C-w><down> <C-w>-
 
 " Toggle highlight
-nmap <C-h> :noh<Return>
+nmap <leader><C-h> :noh<Return>
+
+"---------- Custom Lua Script --------------
+
+" treesitter-unit
+nnoremap <leader>us :lua require"treesitter-unit".select()<CR>
+
+" init.lua
+" vim.api.nvim_set_keymap('x', 'iu', ':lua require"treesitter-unit".select()<CR>', {noremap=true})
+" vim.api.nvim_set_keymap('x', 'au', ':lua require"treesitter-unit".select(true)<CR>', {noremap=true})
+" vim.api.nvim_set_keymap('o', 'iu', ':<c-u>lua require"treesitter-unit".select()<CR>', {noremap=true})
+" vim.api.nvim_set_keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', {noremap=true})

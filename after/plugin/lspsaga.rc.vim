@@ -13,14 +13,16 @@ saga.init_lsp_saga {
 
 EOF
 
-"nnoremap <silent>K :Lspsaga hover_doc<CR> 
-nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+nnoremap <silent><leader>K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+nnoremap <silent><leader>gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+nnoremap <silent><leader>gr <cmd>lua require('lspsaga.rename').rename()<CR>
+" close rename win use <C-c> in insert mode or `q` in noremal mode or `:q`
+nnoremap <silent><leader>gv <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+
 nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
-nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
-nnoremap <silent> gv <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
 " -- jump diagnostic
 nnoremap <silent> [e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
 nnoremap <silent> ]e <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
-
-nnoremap <silent> <C-t> :Lspsaga open_floaterm<CR>
-tnoremap <silent> <C-t> <C-\><C-n>:Lspsaga close_floaterm<CR>
+" Float terminal
+nnoremap <silent> <C-t> <cmd>lua require('lspsaga.floaterm').open_float_terminal()<CR>
+tnoremap <silent> <C-t> <C-\><C-n>:lua require('lspsaga.floaterm').close_float_terminal()<CR>

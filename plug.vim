@@ -10,6 +10,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim' " or other package manager
 
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ggandor/lightspeed.nvim'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
