@@ -112,7 +112,8 @@ init() {
 
   cd /home/"$USER" && \
     dotup && \
-    install_node
+    install_node && \
+    install_go
 
 }
 
@@ -288,6 +289,17 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 export NVM_DIR=~/.nvm
 . ~/.nvm/nvm.sh
 nvm install v14.16.1
+
+EOF
+}
+
+install_go() {
+  sudo -i -u "$USER" bash << EOF
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
+
+wget https://go.dev/dl/go1.17.3.linux-amd64.tar.gz -O go1173.tar.gz
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1173.tar.gz
+rm -rf go1173.tar.gz
 
 EOF
 }
