@@ -20,7 +20,6 @@ Plug 'cohama/lexima.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'Yggdroot/indentLine'
 Plug 'dense-analysis/ale'
-Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'plasticboy/vim-markdown'
 
