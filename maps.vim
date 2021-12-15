@@ -27,7 +27,7 @@ nmap <C-a> gg<S-v>G
 command! W w !sudo tee > /dev/null %
 
 " Bind init COQ
-nnoremap <silent><leader><C-q> :COQnow [-s]<CR>
+nnoremap <silent><leader>q :COQnow [-s]<CR>
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
