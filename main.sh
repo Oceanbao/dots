@@ -98,12 +98,14 @@ init() {
     read USER
   fi
 
-  OS_TYPE="$(cat /etc/issue)"
+  [[ -f /etc/issue ]] && OS_TYPE="$(cat /etc/issue)" || OS_TYPE=$(uname)
 
   if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
     init_user_ubun
   elif [[ "$OS_TYPE" == *"Arch"* ]]; then
     init_user_arch
+  elif [[ "$OS_TYPE" == *"Darwin"* ]]; then
+    init_user_mac
   else
     init_user_ubun
   fi
@@ -164,6 +166,14 @@ init_user_ubun() {
   else
     usermod -s "$(command -v zsh)" -aG sudo "$USER"
   fi
+}
+
+init_user_mac() {
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- MAC DARWIN" "$(printf "%0.1s" ={1..20})"
+  # ripgrep
+  # exa
+  # python
+  # zsh shell
 }
 
 dotup() {

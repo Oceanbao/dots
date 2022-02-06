@@ -125,6 +125,7 @@ export EDITOR='nvim'
 alias dockc="docker container ls -a -s"
 alias dockb="DOCKER_BUILDKIT=1 docker build"
 alias rm="rm -rfIv"
+alias rmm="/bin/rm -rfv"
 alias sd="sudo "
 alias ddu="du -sh * | sort -hr | head -10"
 alias pytest="pytest -l --tb=short"
@@ -132,6 +133,7 @@ alias vim="nvim"
 alias ll="exa -alh --sort=size"
 alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
+alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 
 # Functions
 ftext () {
