@@ -133,6 +133,7 @@ alias vim="nvim"
 alias ll="exa -alh --sort=size"
 alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
+alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 
 # Functions
 ftext () {
