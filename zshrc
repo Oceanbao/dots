@@ -149,7 +149,7 @@ generateqr () {
 	printf "$@" | curl -F-=\<- qrenco.de
 }
 
-export TERM=xterm-256color
+# export TERM=xterm-256color
 
 # export PUPP_CHROME="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
 
