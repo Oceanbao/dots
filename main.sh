@@ -231,6 +231,8 @@ cp -r ~/dots/lua ~/.config/nvim/.
 
 mkdir ~/.config/nvim/themes
 ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
+ln -sfn ~/dots/jellybeans.vim.vim ~/.config/nvim/themes/jellybeans.vim
+ln -sfn ~/dots/molokai.vim.vim ~/.config/nvim/themes/molokai.vim
 
 ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
 

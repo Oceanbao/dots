@@ -267,10 +267,14 @@ au BufNewFile,BufRead *.md set filetype=markdown
 " colorscheme codedark
 " source $HOME/.config/nvim/themes/onedark.vim
 
+"source $HOME/.config/nvim/themes/jellybeans.vim
+source $HOME/.config/nvim/themes/molokai.vim
+
 " colorscheme dracula
 
-let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
+" let ayucolor="dark"   " for dark version of theme
+" colorscheme ayu
+
 
 " source ~/.vimrc.lightline
 
