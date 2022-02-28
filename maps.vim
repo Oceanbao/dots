@@ -5,6 +5,12 @@
 "----------------------------------------------------------------------
 let mapleader=","         " The <leader> key
 
+" Save with <leader>space
+nnoremap <leader><Space> :<c-u>update<cr>
+" gv preserves visual selection
+"vnoremap <silent><c-s> <c-c>:update<cr>gv
+"inoremap <silent><c-s> <c-o>:update<cr>
+
 nnoremap <S-C-p> "0p
 " Delete without yank
 nnoremap <leader>d "_d
