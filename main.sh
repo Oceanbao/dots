@@ -47,53 +47,34 @@ COLOR_END="\033[0m"
 
 # ------------- Utils --------------
 
+pretty_print() {
+  echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
+}
+
 clean_up() { # Perform pre-exit housekeeping
   return
 }
 
 error_exit() {
   local error_message="$1"
-  printf "%s: %s\n" "${PROGRAMME}" "{error_message:-"Unknown Error"}" >&2
+  printf "%s: %s\n" \
+    "${error_message:-"Unknown Error"}" >&2
   clean_up
+  pretty_print "Error Exit"
   exit 1
 }
 
 graceful_exit() {
-  echo -e "\n\n**** ${COLOR_CYAN}BASH DONE!${COLOR_END} ****\n"
+  pretty_print "Gracefully Exit"
   clean_up
   exit
-}
-
-signal_exit() { # Handle trapped signals
-
-  local signal="$1"
-
-  case "$signal" in
-    INT)
-      error_exit "Program interrupted by user" ;;
-    TERM)
-      error_exit "Program terminated" ;;
-    *)
-      error_exit "Terminating on unknown signal" ;;
-  esac
-}
-
-load_libraries() { # Load external shell libraries
-
-  local i
-
-  for i in $LIBS; do
-    if [[ -r "$i" ]]; then
-      source "$i" || error_exit "Library '$i' contains errors."
-    else
-      error_exit "Required library '$i' not found."
-    fi
-  done
 }
 
 usage() {
   printf "%s\n" "Usage: ${PROGRAMME} {-h|--help}"
   printf "%s\n" "       ${PROGRAMME} {init}"
+  printf "%s\n" "       ${PROGRAMME} {brew}"
+  printf "%s\n" "       ${PROGRAMME} {dotup}"
   printf "%s\n" "       ${PROGRAMME} {post}"
 }
 
@@ -106,25 +87,16 @@ $(usage)
 
   Options:
   -h, --help    Display this help message and exit.
-  init          Start Shellup.
-  post          Post-setup process.
+  init          Create user and install basics.
+  brew          Install Linuxbrew.
+  dotup         Install dots.
+  post          Install node, nvim plugins, go
 
   NOTE: superuser is required to run this script.
 
 _EOF_
-  return
+ return
 }
-
-# Trap signals
-trap "signal_exit TERM" TERM HUP
-trap "signal_exit INT"  INT
-
-# Check for root UID
-if [[ $(id -u) != 0 ]]; then
-  error_exit "You must be the superuser to run this script."
-fi
-
-load_libraries
 
 center() {
   termwidth="$(tput cols)"
@@ -132,8 +104,8 @@ center() {
   printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
 }
 
+# ====== Main ======
 
-# ------------- Main --------------
 
 init() {
   # Main process - initialise shell with all steps.
@@ -155,21 +127,13 @@ init() {
   # Ascertain Linux distro
   if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
     init_user_ubun
-    install_homebrew
-    install_python_brew
   elif [[ "$OS_TYPE" == *"Arch"* ]]; then
     init_user_arch
   else
     error_exit "Only [debian, ubuntu, arch] supported."
   fi
 
-  center "INIT dotfiles"
-
-  cd /home/"$USER" && \
-    dotup && \
-    install_node && \
-    install_go
-
+  pretty_print "Init Done"
 }
 
 init_user_arch() {
@@ -220,18 +184,19 @@ init_user_ubun() {
   mv exa-linux-x86_64 /usr/local/bin/exa
 }
 
-dotup() {
-  sudo -i -u "$USER" bash << EOF
+install_dots() {
+  sudo -i -u "$USER" bash <<'EOF'
 set -eo pipefail
 
-git clone https://github.com/Oceanbao/dots.git
-
 # Fix up pip and venv
-python -m pip install pip || true
+rm -rf ~/envPY
 python -m venv ~/envPY
 source ~/envPY/bin/activate
 pip install -Uq pip
 pip install -q pynvim
+
+rm -rf ~/dots
+git clone https://github.com/Oceanbao/dots.git
 
 # OMZ
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
@@ -249,12 +214,14 @@ ln -sfn ~/dots/zshrc ~/.zshrc
 # neovim
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
 
-curl -LO https://github.com/neovim/neovim/releases/download/v0.5.1/nvim.appimage
+# curl -LO https://github.com/neovim/neovim/releases/download/v0.5.1/nvim.appimage
+curl -LO https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
 chmod u+x nvim.appimage
 ./nvim.appimage --appimage-extract
 sudo rm -rf /squashfs-root
 sudo rm -rf /usr/bin/nvim
 sudo mv squashfs-root / && sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+rm -rf nvim.appimage
 
 sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -285,8 +252,8 @@ cp -r ~/dots/lua ~/.config/nvim/.
 
 mkdir ~/.config/nvim/themes
 ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
-ln -sfn ~/dots/jellybeans.vim.vim ~/.config/nvim/themes/jellybeans.vim
-ln -sfn ~/dots/molokai.vim.vim ~/.config/nvim/themes/molokai.vim
+ln -sfn ~/dots/jellybeans.vim ~/.config/nvim/themes/jellybeans.vim
+ln -sfn ~/dots/molokai.vim ~/.config/nvim/themes/molokai.vim
 
 ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
 
@@ -304,61 +271,27 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 EOF
 }
 
-
-dotup_base() {
-  sudo -i -u "$USER" bash << EOF
-set -eo pipefail
-
-git clone https://github.com/Oceanbao/dots.git
-
-# OMZ
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
-
-rm -rf ~/.oh-my-zsh
-curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
-# powerline10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
-ln -sfn ~/dots/zshrc ~/.zshrc
-
-# git
-ln -sfn ~/dots/gitconfig ~/.gitconfig
-
-# tmux
-ln -sfn ~/dots/tmux.conf ~/.tmux.conf
-
-# fzf
-rm -rf ~/.fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
-
-EOF
-}
-
 # --------------- Unit Installers ---------------
 
 install_homebrew() {
-  sudo -i -u "$USER" bash << EOF
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# Assume zsh installed and run as main user
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-EOF
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Assume zsh installed and run as main user
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
 }
 
 install_python_brew() {
-  sudo -i -u "$USER" bash << EOF
+  sudo -i -u "$USER" bash <<'EOF'
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install python@3.9
-ln -sfn $(command -v python3) /usr/bin/python
+sudo ln -sfn $(command -v python3) /usr/bin/python
+sudo ln -sfn $(command -v pip3) /usr/bin/pip
 EOF
 }
 
 install_python_apt() {
-  sudo -i -u "$USER" bash << EOF
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
 
 if [[ ! $(command -v python3.8) || ! $(command -v python3) ]]; then
@@ -380,50 +313,43 @@ EOF
 }
 
 install_node() {
-  sudo -i -u "$USER" bash << EOF
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-export NVM_DIR=~/.nvm
-. ~/.nvm/nvm.sh
-nvm install v14.16.1
-
-EOF
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  export NVM_DIR=~/.nvm
+  . ~/.nvm/nvm.sh
+  nvm install v14.16.1
 }
 
 install_go() {
-  sudo -i -u "$USER" bash << EOF
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
-wget https://go.dev/dl/go1.17.3.linux-amd64.tar.gz -O go1173.tar.gz
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1173.tar.gz
-rm -rf go1173.tar.gz
-
-EOF
+  wget https://go.dev/dl/go1.17.3.linux-amd64.tar.gz -O go1173.tar.gz
+  sudo rm -rf /usr/local/go && \
+    sudo tar -C /usr/local -xzf go1173.tar.gz
+  rm -rf go1173.tar.gz
 }
 
-post() {
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Post INIT Setup..." "$(printf "%0.1s" ={1..20})"
+install_nvim_plugins() {
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Install NVIM PLUGINS..." "$(printf "%0.1s" ={1..20})"
 
-# neovim
-npm install -g neovim
+  # neovim
+  npm install -g neovim
 
-# LSP Install
-npm install -g pyright
-npm install -g bash-language-server
-npm install -g typescript typescript-language-server
-npm install -g diagnostic-languageserver
-npm install -g eslint_d prettier
-npm install -g tree-sitter-cli
-curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
-chmod +x ~/.local/bin/rust-analyzer
+  # LSP Install
+  npm install -g pyright
+  npm install -g bash-language-server
+  npm install -g typescript typescript-language-server
+  npm install -g diagnostic-languageserver
+  npm install -g eslint_d prettier
+  npm install -g tree-sitter-cli
+  [[ -d ~/.local/bin ]] || mkdir ~/.local/bin
+  curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
+  chmod +x ~/.local/bin/rust-analyzer
 
-# Finally, nvim INIT
-#nvim '+PlugInstall | qa'
-
+  # Finally, nvim INIT
+  #nvim '+PlugInstall | qa'
 }
-
-
 
 # ------------- Parse CLI ---------------
 
@@ -433,8 +359,8 @@ echo -e "\n**** ${COLOR_RED}BASH BEGIN${COLOR_END} ****\n"
 [[ $# -eq 0 ]] && help_message && graceful_exit
 
 # MAIN
-while [[ -n "$1" ]]; do
-  case "$1" in
+while [[ -n $1 ]]; do
+  case $1 in
     -h | --help)
       help_message
       graceful_exit
@@ -442,14 +368,22 @@ while [[ -n "$1" ]]; do
     init)
       init
       ;;
-    post)
-      post
+    brew)
+      install_homebrew
       ;;
-    -* | --*)
-      usage >&2
-      error_exit "Unknown option $1"
+    dotup)
+      printf "ENTER <USER>: \n"
+      read USER
+      install_python_brew
+      install_dots
+      ;;
+    post)
+      install_node
+      install_nvim_plugins
+      install_go
+      ;;
     *)
-      error_exit "Unknown argument $1";
+      error_exit "Unknown option $1";
       ;;
   esac
   shift
