@@ -2,8 +2,8 @@
 
 set -eo pipefail
 
-PROGNAME="./shell_up.sh"
-VERSION="0.1.0"
+PROGNAME="./main.sh"
+VERSION="0.1.1"
 
 # ------------- Colors -------------
  
