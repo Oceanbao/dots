@@ -1,9 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# ---------------------------------------------------------------------------
+# Ghostinshell - Initialising Shell for ghost Ocean.
+
+# Copyright 2022, Ocean Bao <baobaobiz@gmail.com>
+
+# Usage: demo [-h|--help]
+#        demo [-a]
+
+# Revision history:
+# 2022-03-01 Created by new_script.bash ver. 3.5.2
+# ---------------------------------------------------------------------------
 
 set -eo pipefail
 
-PROGNAME="./main.sh"
+PROGNAME="${0##*/}"
 VERSION="0.1.1"
+LIBS= # Insert pathnames of any required external shell libraries
 
 # ------------- Colors -------------
  
@@ -41,8 +53,7 @@ clean_up() { # Perform pre-exit housekeeping
 
 error_exit() {
   local error_message="$1"
-  printf "%s: %s\n" \
-    "${error_message:-"Unknown Error"}" >&2
+  printf "%s: %s\n" "${PROGRAMME}" "{error_message:-"Unknown Error"}" >&2
   clean_up
   exit 1
 }
@@ -53,27 +64,67 @@ graceful_exit() {
   exit
 }
 
+signal_exit() { # Handle trapped signals
+
+  local signal="$1"
+
+  case "$signal" in
+    INT)
+      error_exit "Program interrupted by user" ;;
+    TERM)
+      error_exit "Program terminated" ;;
+    *)
+      error_exit "Terminating on unknown signal" ;;
+  esac
+}
+
+load_libraries() { # Load external shell libraries
+
+  local i
+
+  for i in $LIBS; do
+    if [[ -r "$i" ]]; then
+      source "$i" || error_exit "Library '$i' contains errors."
+    else
+      error_exit "Required library '$i' not found."
+    fi
+  done
+}
+
 usage() {
-  printf "%s\n%s\n" \
-    "Usage: ${PROGNAME} [-h|--help ]" \
-    "       ${PROGNAME} init_user" \
-    "       ${PROGNAME} init_shell"
+  printf "%s\n" "Usage: ${PROGRAMME} {-h|--help}"
+  printf "%s\n" "       ${PROGRAMME} {init}"
+  printf "%s\n" "       ${PROGRAMME} {post}"
 }
 
 help_message() {
   cat <<- _EOF_
-${PROGNAME} ${VERSION}
-Python script generator.
+$PROGNAME ver. $VERSION
+Ghostinshell - Initialising Shell for ghost Ocean.
 
 $(usage)
 
   Options:
-
   -h, --help    Display this help message and exit.
-  init          init all steps
+  init          Start Shellup.
+  post          Post-setup process.
+
+  NOTE: superuser is required to run this script.
 
 _EOF_
+  return
 }
+
+# Trap signals
+trap "signal_exit TERM" TERM HUP
+trap "signal_exit INT"  INT
+
+# Check for root UID
+if [[ $(id -u) != 0 ]]; then
+  error_exit "You must be the superuser to run this script."
+fi
+
+load_libraries
 
 center() {
   termwidth="$(tput cols)"
@@ -81,10 +132,11 @@ center() {
   printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
 }
 
-# ====== Main ======
 
+# ------------- Main --------------
 
 init() {
+  # Main process - initialise shell with all steps.
   center "INIT user"
 
   printf "CREATE NEW USER? <Y/N>\n"
@@ -100,12 +152,15 @@ init() {
 
   OS_TYPE="$(cat /etc/issue)"
 
+  # Ascertain Linux distro
   if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
     init_user_ubun
+    install_homebrew
+    install_python_brew
   elif [[ "$OS_TYPE" == *"Arch"* ]]; then
     init_user_arch
   else
-    init_user_ubun
+    error_exit "Only [debian, ubuntu, arch] supported."
   fi
 
   center "INIT dotfiles"
@@ -130,40 +185,39 @@ init_user_arch() {
 }
 
 init_user_ubun() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU LINUX" "$(printf "%0.1s" ={1..20})"
-  apt update && apt install -y sudo curl zip wget tmux git zsh manpages-dev build-essential
-  # Install ripgrep
-  TEMP_DEB="$(mktemp)" && \
-    wget -O "$TEMP_DEB" 'https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb' && \
-    dpkg -i "$TEMP_DEB" && \
-    rm -f "$TEMP_DEB"
-  # Install exa
-  curl https://sh.rustup.rs -sSf | sh
-  wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip
-  unzip exa-linux-x86_64-0.8.0.zip
-  mv exa-linux-x86_64 /usr/local/bin/exa
-  # Install python
-  if [[ ! $(command -v python3.8) || ! $(command -v python3) ]]; then
-    apt install -y software-properties-common python3-pip
-    EXIT_CODE=0
-    add-apt-repository ppa:deadsnakes/ppa
-    apt install -y python3.8 python3.8-venv || EXIT_CODE=$!
-    if (( $EXIT_CODE != 0 )); then
-      EXIT_CODE=0
-      apt install -y python3 python3-pip python3-venv libssl-dev libffi-dev python3-dev || EXIT_CODE=$!
-      if (( $EXIT_CODE != 0 )); then
-        exit 1
-      fi
-    fi
-    ln -sfn $(command -v python3.8) /usr/bin/python || ln -sfn $(command -v python3) /usr/bin/python
-  fi
-  # Set user shell
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU/DEBIAN LINUX" "$(printf "%0.1s" ={1..20})"
+
+  # Create user
   if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g sudo "$USER"
     passwd "$USER"
   else
     usermod -s "$(command -v zsh)" -aG sudo "$USER"
   fi
+
+  # Essential OS installation
+  apt update && apt install -y \
+                    sudo \
+                    curl \
+                    zip \
+                    wget \
+                    tmux \
+                    git \
+                    zsh \
+                    manpages-dev \
+                    build-essential
+
+  # Install ripgrep
+  TEMP_DEB="$(mktemp)" && \
+    wget -O "$TEMP_DEB" 'https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb' && \
+    dpkg -i "$TEMP_DEB" && \
+    rm -f "$TEMP_DEB"
+
+  # Install exa (and Rust)
+  curl https://sh.rustup.rs -sSf | sh
+  wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip
+  unzip exa-linux-x86_64-0.8.0.zip
+  mv exa-linux-x86_64 /usr/local/bin/exa
 }
 
 dotup() {
@@ -176,8 +230,8 @@ git clone https://github.com/Oceanbao/dots.git
 python -m pip install pip || true
 python -m venv ~/envPY
 source ~/envPY/bin/activate
-pip install -U pip
-pip install pynvim
+pip install -Uq pip
+pip install -q pynvim
 
 # OMZ
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
@@ -282,6 +336,48 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 EOF
 }
 
+# --------------- Unit Installers ---------------
+
+install_homebrew() {
+  sudo -i -u "$USER" bash << EOF
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Assume zsh installed and run as main user
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+EOF
+}
+
+install_python_brew() {
+  sudo -i -u "$USER" bash << EOF
+brew install python@3.9
+ln -sfn $(command -v python3) /usr/bin/python
+EOF
+}
+
+install_python_apt() {
+  sudo -i -u "$USER" bash << EOF
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
+
+if [[ ! $(command -v python3.8) || ! $(command -v python3) ]]; then
+  # Case: No python3.8 nor python3 found
+  apt install -y software-properties-common python3-pip
+  EXIT_CODE=0
+  add-apt-repository ppa:deadsnakes/ppa
+  apt install -y python3.8 python3.8-venv || EXIT_CODE=$!
+  if (( $EXIT_CODE != 0 )); then
+    EXIT_CODE=0
+    apt install -y python3 python3-pip python3-venv libssl-dev libffi-dev python3-dev || EXIT_CODE=$!
+    if (( $EXIT_CODE != 0 )); then
+      exit 1
+    fi
+  fi
+  ln -sfn $(command -v python3.8) /usr/bin/python || ln -sfn $(command -v python3) /usr/bin/python
+fi
+EOF
+}
 
 install_node() {
   sudo -i -u "$USER" bash << EOF
@@ -306,7 +402,6 @@ rm -rf go1173.tar.gz
 EOF
 }
 
-
 post() {
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Post INIT Setup..." "$(printf "%0.1s" ={1..20})"
 
@@ -326,11 +421,8 @@ chmod +x ~/.local/bin/rust-analyzer
 # Finally, nvim INIT
 #nvim '+PlugInstall | qa'
 
-# Homebrew
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/vagrant/.zprofile
-# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
+
 
 
 # ------------- Parse CLI ---------------
@@ -341,10 +433,11 @@ echo -e "\n**** ${COLOR_RED}BASH BEGIN${COLOR_END} ****\n"
 [[ $# -eq 0 ]] && help_message && graceful_exit
 
 # MAIN
-while [[ -n $1 ]]; do
-  case $1 in
+while [[ -n "$1" ]]; do
+  case "$1" in
     -h | --help)
       help_message
+      graceful_exit
       ;;
     init)
       init
@@ -352,10 +445,12 @@ while [[ -n $1 ]]; do
     post)
       post
       ;;
+    -* | --*)
+      usage >&2
+      error_exit "Unknown option $1"
     *)
-      error_exit "Unknown option $1";
+      error_exit "Unknown argument $1";
       ;;
   esac
-  graceful_exit;
-  # shift
+  shift
 done
