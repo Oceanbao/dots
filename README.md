@@ -7,13 +7,14 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/Oceanbao/dots">
-    <img src="shell_v1.png" alt="Logo" width="882" height="635">
+    <img src="images/logo.png" alt="Logo" width="882" height="635">
   </a>
 
 <h3 align="center">Ocean Shell</h3>
@@ -64,20 +65,17 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Terminal setup with Neovim v0.5+, Tmux, Zsh.
+Shell environment setup.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Svelte](https://svelte.dev/)
-- [Laravel](https://laravel.com)
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
+- [Zsh](https://zsh.org)
+- [Oh-My-Zsh](https://ohmyz.sh)
+- [Neovim](https://neovim.io)
+  - and plugins
+- [Tmux](https://github.com/tmux/tmux)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -85,33 +83,50 @@ Terminal setup with Neovim v0.5+, Tmux, Zsh.
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+The following shows how to use this shell setup.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-
-- bash
-  ```bash
-  bash dots/main.sh init
-  ```
+- The repo only works on Linux (Ubuntu/Debian and Arch)
+- Root access is required (TODO: how to circumvent this)
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. As `root` user download this repo somewhere - e.g. `/tmp`
+   ```bash
+   (root): git clone https://github.com/Oceanbao/dots.git
+   ```
+2. Step1: create new user (or existing user) and install basic libs
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   (root): bash dots/main.sh init
    ```
-3. Install NPM packages
+   - Follow the instruction to create/use `USER`
+3. Step2: install Linuxbrew via `USER` shell (this is required by Linuxbrew)
    ```sh
-   npm install
+   (USER): git clone https://github.com/Oceanbao/dots.git
+   (USER): bash dots/main.sh brew
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
+4. Step3: as `root` install all dotfiles (see TODO: for detail)
+   ```sh
+   (root): bash dots/main.sh dotup
    ```
+5. Step4: as `USER` install post-setups (see TODO: for detail)
+   ```sh
+   (USER): bash dots/main.sh post
+   ```
+6. Step5: setup for zsh theme and neovim
+  ```sh
+  # Go to USER shell
+  (root): su - $USER
+  # This will prompt powerline13k setup
+  # Then setup vim by enter vim
+  # Run the following in vim's cmd
+  :PluginInstall
+  # Exit and re-enter vim to wait for treesitter setup
+  # Setup defx
+  :remotePluginInstall
+  TODO:
+  ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -119,9 +134,25 @@ This is an example of how to list things you need to use the software and how to
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Once the **Installation** is successful, `USER` shell will have:
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+- Tmux + Lualine combo
+
+[![Shell Screen Shot][shell-screenshot]](images/shell.jpg)
+
+- Neovim with defx
+
+[![Defx Screen Shot][defx-screenshot]](images/defx.jpg)
+
+- Neovim with Completion
+
+[![Completion Screen Shot][completion-screenshot]](images/completion.jpg)
+
+- Neovim with Telescope
+
+[![Telescope Screen Shot][telescope-screenshot]](images/telescope.jpg)
+
+<!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -129,18 +160,19 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
+- [ ] Streamline installation without `root` access
+- [ ] Streamline installation by single step
+- [ ] Support more platforms
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Oceanbao/dots/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
+
+TODO:
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -167,9 +199,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Ocean Bao - [@oceanbao](https://twitter.com/oceanbao) - baobaobiz@gmail.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -177,15 +207,17 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 ## Acknowledgments
 
-- []()
-- []()
-- []()
+- Heavily inspired by [craftzdog's dotfiles](https://github.com/craftzdog/dotfiles-public)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
+[license-shield]:https://img.shields.io/github/license/oceanbao/dots.svg?style=for-the-badge 
+[license-url]: https://github.com/Oceanbao/dots/blob/master/LICENSE.txt
+[product-screenshot]: images/product.jpg
+[shell-screenshot]: images/shell.jpg
+[defx-screenshot]: images/defx.jpg
+[completion-screenshot]: images/completion.jpg
+[telescope-screenshot]: images/telescope.jpg
