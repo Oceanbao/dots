@@ -134,8 +134,13 @@ alias ll="exa -alh --sort=size"
 alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
+alias openports="sudo lsof -i -P -n | grep LISTEN"
 
 # Functions
+checkport() {
+  sudo lsof -i:$1
+}
+
 ftext () {
 	grep -iIHrn --color=always "$1" . | less -R -r
 }
