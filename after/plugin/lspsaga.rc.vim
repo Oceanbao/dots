@@ -13,7 +13,7 @@ saga.init_lsp_saga {
 
 EOF
 
-nnoremap <silent><leader>K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+nnoremap <silent><leader>gH <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
 nnoremap <silent><leader>gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
 nnoremap <silent><leader>gr <cmd>lua require('lspsaga.rename').rename()<CR>
 " close rename win use <C-c> in insert mode or `q` in noremal mode or `:q`

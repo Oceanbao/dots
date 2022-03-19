@@ -29,7 +29,8 @@ if has("nvim")
   Plug 'kristijanhusak/defx-icons'
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'neovim/nvim-lspconfig'
-  Plug 'glepnir/lspsaga.nvim'
+  " Plug 'glepnir/lspsaga.nvim'
+  Plug 'tami5/lspsaga.nvim', { 'branch': 'nvim6.0' }
   Plug 'folke/lsp-colors.nvim'
   Plug 'nvim-lua/completion-nvim'
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }

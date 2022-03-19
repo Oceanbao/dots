@@ -212,17 +212,6 @@ rm -rf ~/.zshrc
 ln -sfn ~/dots/zshrc ~/.zshrc
 
 # neovim
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
-
-# curl -LO https://github.com/neovim/neovim/releases/download/v0.5.1/nvim.appimage
-curl -LO https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
-chmod u+x nvim.appimage
-./nvim.appimage --appimage-extract
-sudo rm -rf /squashfs-root
-sudo rm -rf /usr/bin/nvim
-sudo mv squashfs-root / && sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
-rm -rf nvim.appimage
-
 sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
@@ -287,6 +276,13 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install python@3.9
 sudo ln -sfn $(command -v python3) /usr/bin/python
 sudo ln -sfn $(command -v pip3) /usr/bin/pip
+EOF
+}
+
+install_neovim() {
+  sudo -i -u "$USER" bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
+brew install neovim
 EOF
 }
 
@@ -375,6 +371,7 @@ while [[ -n $1 ]]; do
       printf "ENTER <USER>: \n"
       read USER
       install_python_brew
+      install_neovim
       install_dots
       ;;
     post)
