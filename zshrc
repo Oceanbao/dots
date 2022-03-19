@@ -124,6 +124,7 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias dockc="docker container ls -a -s"
+alias dockcrm="docker container rm"
 alias dockb="DOCKER_BUILDKIT=1 docker build"
 alias rm="rm -rfIv"
 alias sd="sudo "

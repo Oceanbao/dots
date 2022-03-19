@@ -117,7 +117,15 @@ nvim_lsp.rust_analyzer.setup {
   filetypes = { "rust" },
   root_dir = nvim_lsp.util.root_pattern("Cargo.toml", "rust-project.json"),
   settings = {
-    ["rust-analyzer"] = {}
+    ["rust-analyzer"] = {
+      checkOnSave = {
+        allFeatures = true,
+        overrideCommand = {
+          'cargo', 'clippy', '--workspace', '--message-format=json',
+          '--all-targets', '--all-features'
+          }
+        }
+      }
   }
 }
 
