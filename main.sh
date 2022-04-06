@@ -125,7 +125,7 @@ init() {
   OS_TYPE="$(cat /etc/issue)"
 
   # Ascertain Linux distro
-  if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]]; then
+  if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]] || [[ "$OS_TYPE" == *"Pop"* ]]; then
     init_user_ubun
   elif [[ "$OS_TYPE" == *"Arch"* ]]; then
     init_user_arch
@@ -151,6 +151,20 @@ init_user_arch() {
 init_user_ubun() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU/DEBIAN LINUX" "$(printf "%0.1s" ={1..20})"
 
+  # Essential OS installation
+  apt update && apt install -y \
+                    sudo \
+                    curl \
+                    zip \
+                    wget \
+                    tmux \
+                    procps \
+                    file \
+                    git \
+                    zsh \
+                    manpages-dev \
+                    build-essential
+
   # Create user
   if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g sudo "$USER"
@@ -159,29 +173,8 @@ init_user_ubun() {
     usermod -s "$(command -v zsh)" -aG sudo "$USER"
   fi
 
-  # Essential OS installation
-  apt update && apt install -y \
-                    sudo \
-                    curl \
-                    zip \
-                    wget \
-                    tmux \
-                    git \
-                    zsh \
-                    manpages-dev \
-                    build-essential
-
-  # Install ripgrep
-  TEMP_DEB="$(mktemp)" && \
-    wget -O "$TEMP_DEB" 'https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb' && \
-    dpkg -i "$TEMP_DEB" && \
-    rm -f "$TEMP_DEB"
-
-  # Install exa (and Rust)
+  # Install Rust
   curl https://sh.rustup.rs -sSf | sh
-  wget -c https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip
-  unzip exa-linux-x86_64-0.8.0.zip
-  mv exa-linux-x86_64 /usr/local/bin/exa
 }
 
 install_dots() {
@@ -266,13 +259,14 @@ install_homebrew() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  # Assume zsh installed and run as main user
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
 }
 
 install_python_brew() {
   sudo -i -u "$USER" bash <<'EOF'
+# Assume zsh installed and run as main user
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 brew install python@3.9
 sudo ln -sfn $(command -v python3) /usr/bin/python
 sudo ln -sfn $(command -v pip3) /usr/bin/pip
@@ -309,21 +303,21 @@ EOF
 }
 
 install_node() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u "$USER" bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-  export NVM_DIR=~/.nvm
-  . ~/.nvm/nvm.sh
-  nvm install v14.16.1
+brew install nvm
+nvm install --lts
+EOF
 }
 
 install_go() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
-  wget https://go.dev/dl/go1.17.3.linux-amd64.tar.gz -O go1173.tar.gz
+  wget https://go.dev/dl/go1.18.linux-amd64.tar.gz -O go118.tar.gz
   sudo rm -rf /usr/local/go && \
-    sudo tar -C /usr/local -xzf go1173.tar.gz
-  rm -rf go1173.tar.gz
+    sudo tar -C /usr/local -xzf go118.tar.gz
+  rm -rf go118.tar.gz
 }
 
 install_nvim_plugins() {
@@ -345,6 +339,17 @@ install_nvim_plugins() {
 
   # Finally, nvim INIT
   #nvim '+PlugInstall | qa'
+}
+
+install_cli() {
+  sudo -i -u "$USER" bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+
+brew install exa
+brew install ripgrep
+brew install duf
+brew tap tgotwig/linux-dust && brew install dust
+EOF
 }
 
 # ------------- Parse CLI ---------------
@@ -378,6 +383,7 @@ while [[ -n $1 ]]; do
       install_node
       install_nvim_plugins
       install_go
+      install_cli
       ;;
     *)
       error_exit "Unknown option $1";
