@@ -173,8 +173,6 @@ init_user_ubun() {
     usermod -s "$(command -v zsh)" -aG sudo "$USER"
   fi
 
-  # Install Rust
-  curl https://sh.rustup.rs -sSf | sh
 }
 
 install_dots() {
@@ -259,6 +257,12 @@ install_homebrew() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+
+install_rust() {
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
+
+  curl https://sh.rustup.rs -sSf | sh
 }
 
 install_python_brew() {
