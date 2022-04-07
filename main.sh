@@ -176,79 +176,74 @@ init_user_ubun() {
 }
 
 install_dots() {
-  sudo -i -u "$USER" bash <<'EOF'
-set -eo pipefail
+  set -eo pipefail
 
-# Fix up pip and venv
-rm -rf ~/envPY
-python -m venv ~/envPY
-source ~/envPY/bin/activate
-pip install -Uq pip
-pip install -q pynvim
+  pip install -Uq pip
+  pip install -q pynvim
 
-rm -rf ~/dots
-git clone https://github.com/Oceanbao/dots.git
+  rm -rf ~/dots
+  git clone https://github.com/Oceanbao/dots.git
 
-# OMZ
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
+  # OMZ
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
 
-rm -rf ~/.oh-my-zsh
-curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
-# powerline10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
-rm -rf ~/.zshrc
-ln -sfn ~/dots/zshrc ~/.zshrc
+  rm -rf ~/.oh-my-zsh
+  curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 
-# neovim
-sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  # powerline10k
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+  rm -rf ~/.zshrc
+  ln -sfn ~/dots/zshrc ~/.zshrc
 
-rm -rf ~/.config/nvim
-mkdir -p ~/.config/nvim
-ln -sfn ~/dots/init.vim ~/.config/nvim/init.vim
-ln -sfn ~/dots/plug.vim ~/.config/nvim/plug.vim
-ln -sfn ~/dots/maps.vim ~/.config/nvim/maps.vim
+  # neovim plugins
+  sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-rm -rf ~/.config/nvim/after
-mkdir -p ~/.config/nvim/after/plugin
-ln -sfn ~/dots/after/plugin/lexima.rc.vim ~/.config/nvim/after/plugin/lexima.rc.vim
-ln -sfn ~/dots/after/plugin/lsp-colors.rc.vim ~/.config/nvim/after/plugin/lsp-colors.rc.vim
-ln -sfn ~/dots/after/plugin/fugitive.rc.vim ~/.config/nvim/after/plugin/fugitive.rc.vim
-ln -sfn ~/dots/after/plugin/web-devicons.rc.vim ~/.config/nvim/after/plugin/web-devicons.rc.vim
-ln -sfn ~/dots/after/plugin/lspsaga.rc.vim ~/.config/nvim/after/plugin/lspsaga.rc.vim
-ln -sfn ~/dots/after/plugin/completion.rc.vim ~/.config/nvim/after/plugin/completion.rc.vim
-ln -sfn ~/dots/after/plugin/telescope.rc.vim ~/.config/nvim/after/plugin/telescope.rc.vim
-ln -sfn ~/dots/after/plugin/treesitter.rc.vim ~/.config/nvim/after/plugin/treesitter.rc.vim
-ln -sfn ~/dots/after/plugin/lualine.rc.lua ~/.config/nvim/after/plugin/lualine.rc.lua
-ln -sfn ~/dots/after/plugin/tabline.rc.vim ~/.config/nvim/after/plugin/tabline.rc.vim
-ln -sfn ~/dots/after/plugin/defx.rc.vim ~/.config/nvim/after/plugin/defx.rc.vim
-ln -sfn ~/dots/after/plugin/lspconfig.rc.vim ~/.config/nvim/after/plugin/lspconfig.rc.vim
+  rm -rf ~/.config/nvim
+  mkdir -p ~/.config/nvim
+  ln -sfn ~/dots/init.vim ~/.config/nvim/init.vim
+  ln -sfn ~/dots/plug.vim ~/.config/nvim/plug.vim
+  ln -sfn ~/dots/maps.vim ~/.config/nvim/maps.vim
 
-# custom lua scripts
-cp -r ~/dots/lua ~/.config/nvim/.
+  rm -rf ~/.config/nvim/after
+  mkdir -p ~/.config/nvim/after/plugin
+  ln -sfn ~/dots/after/plugin/lexima.rc.vim ~/.config/nvim/after/plugin/lexima.rc.vim
+  ln -sfn ~/dots/after/plugin/lsp-colors.rc.vim ~/.config/nvim/after/plugin/lsp-colors.rc.vim
+  ln -sfn ~/dots/after/plugin/fugitive.rc.vim ~/.config/nvim/after/plugin/fugitive.rc.vim
+  ln -sfn ~/dots/after/plugin/web-devicons.rc.vim ~/.config/nvim/after/plugin/web-devicons.rc.vim
+  ln -sfn ~/dots/after/plugin/lspsaga.rc.vim ~/.config/nvim/after/plugin/lspsaga.rc.vim
+  ln -sfn ~/dots/after/plugin/completion.rc.vim ~/.config/nvim/after/plugin/completion.rc.vim
+  ln -sfn ~/dots/after/plugin/telescope.rc.vim ~/.config/nvim/after/plugin/telescope.rc.vim
+  ln -sfn ~/dots/after/plugin/treesitter.rc.vim ~/.config/nvim/after/plugin/treesitter.rc.vim
+  ln -sfn ~/dots/after/plugin/lualine.rc.lua ~/.config/nvim/after/plugin/lualine.rc.lua
+  ln -sfn ~/dots/after/plugin/tabline.rc.vim ~/.config/nvim/after/plugin/tabline.rc.vim
+  ln -sfn ~/dots/after/plugin/defx.rc.vim ~/.config/nvim/after/plugin/defx.rc.vim
+  ln -sfn ~/dots/after/plugin/lspconfig.rc.vim ~/.config/nvim/after/plugin/lspconfig.rc.vim
 
-mkdir ~/.config/nvim/themes
-ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
-ln -sfn ~/dots/jellybeans.vim ~/.config/nvim/themes/jellybeans.vim
-ln -sfn ~/dots/molokai.vim ~/.config/nvim/themes/molokai.vim
+  # custom lua scripts
+  cp -r ~/dots/lua ~/.config/nvim/.
 
-ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
+  mkdir ~/.config/nvim/themes
+  ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
+  ln -sfn ~/dots/jellybeans.vim ~/.config/nvim/themes/jellybeans.vim
+  ln -sfn ~/dots/molokai.vim ~/.config/nvim/themes/molokai.vim
 
-# git
-rm -rf ~/.gitconfig
-ln -sfn ~/dots/gitconfig ~/.gitconfig
+  ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
 
-# tmux
-rm -rf ~/.tmux.conf
-ln -sfn ~/dots/tmux.conf ~/.tmux.conf
+  # git
+  rm -rf ~/.gitconfig
+  ln -sfn ~/dots/gitconfig ~/.gitconfig
 
-# fzf
-rm -rf ~/.fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
-EOF
+  # tmux
+  rm -rf ~/.tmux.conf
+  ln -sfn ~/dots/tmux.conf ~/.tmux.conf
+
+  # fzf
+  rm -rf ~/.fzf
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 }
 
 # --------------- Unit Installers ---------------
@@ -266,53 +261,25 @@ install_rust() {
 }
 
 install_python_brew() {
-  sudo -i -u "$USER" bash <<'EOF'
-# Assume zsh installed and run as main user
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  # Assume zsh installed and run as main user
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-brew install python@3.9
-sudo ln -sfn $(command -v python3) /usr/bin/python
-sudo ln -sfn $(command -v pip3) /usr/bin/pip
-EOF
+  brew install python@3.9
+  sudo ln -sfn $(command -v python3) /usr/bin/python
+  sudo ln -sfn $(command -v pip3) /usr/bin/pip
 }
 
 install_neovim() {
-  sudo -i -u "$USER" bash <<'EOF'
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
-brew install neovim
-EOF
-}
-
-install_python_apt() {
-  sudo -i -u "$USER" bash <<'EOF'
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
-
-if [[ ! $(command -v python3.8) || ! $(command -v python3) ]]; then
-  # Case: No python3.8 nor python3 found
-  apt install -y software-properties-common python3-pip
-  EXIT_CODE=0
-  add-apt-repository ppa:deadsnakes/ppa
-  apt install -y python3.8 python3.8-venv || EXIT_CODE=$!
-  if (( $EXIT_CODE != 0 )); then
-    EXIT_CODE=0
-    apt install -y python3 python3-pip python3-venv libssl-dev libffi-dev python3-dev || EXIT_CODE=$!
-    if (( $EXIT_CODE != 0 )); then
-      exit 1
-    fi
-  fi
-  ln -sfn $(command -v python3.8) /usr/bin/python || ln -sfn $(command -v python3) /usr/bin/python
-fi
-EOF
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
+  brew install neovim
 }
 
 install_node() {
-  sudo -i -u "$USER" bash <<'EOF'
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
-brew install nvm
-nvm install --lts
-EOF
+  brew install nvm
+  nvm install --lts
 }
 
 install_go() {
@@ -346,14 +313,12 @@ install_nvim_plugins() {
 }
 
 install_cli() {
-  sudo -i -u "$USER" bash <<'EOF'
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
-brew install exa
-brew install ripgrep
-brew install duf
-brew tap tgotwig/linux-dust && brew install dust
-EOF
+  brew install exa
+  brew install ripgrep
+  brew install duf
+  brew tap tgotwig/linux-dust && brew install dust
 }
 
 # ------------- Parse CLI ---------------
@@ -377,13 +342,9 @@ while [[ -n $1 ]]; do
       install_homebrew
       ;;
     dotup)
-      printf "ENTER <USER>: \n"
-      read USER
       install_python_brew
       install_neovim
       install_dots
-      ;;
-    post)
       install_node
       install_nvim_plugins
       install_go
