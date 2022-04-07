@@ -146,7 +146,7 @@ set exrc
 
 " vim: set foldmethod=marker foldlevel=0:
 
-let g:python3_host_prog=expand('~/envPY/bin/python')
+" let g:python3_host_prog=expand('~/envPY/bin/python')
 
 " Old "{{{
 " ----------------------------------------------------------------------
