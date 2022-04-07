@@ -276,7 +276,8 @@ install_node() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-  source ~/.zshrc
+  export NVM_DIR=~/.nvm
+  . ~/.nvm/nvm.sh
   nvm install --lts
 }
 
