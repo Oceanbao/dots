@@ -181,9 +181,6 @@ install_dots() {
   pip install -Uq pip
   pip install -q pynvim
 
-  rm -rf ~/dots
-  git clone https://github.com/Oceanbao/dots.git
-
   # OMZ
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
 
