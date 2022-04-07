@@ -317,6 +317,7 @@ install_cli() {
   brew install exa
   brew install ripgrep
   brew install duf
+  brew install bat
   brew tap tgotwig/linux-dust && brew install dust
 }
 
