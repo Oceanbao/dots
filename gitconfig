@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 # symlinked to dott
 [user]
-	name = Oceanbao
+	name = oceanbao
 	email = oceanbao@outlook.com
 [merge]
 	tool = vimdiff
