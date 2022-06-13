@@ -6,10 +6,15 @@ nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 lua << EOF
+function telescope_buffer_dir()
+  return vim.fn.expand('%:p:h')
+end
+
+local telescope = require('telescope')
 local actions = require('telescope.actions')
 -- Global remapping
 ------------------------------
-require('telescope').setup{
+telescope.setup{
   defaults = {
     mappings = {
       n = {

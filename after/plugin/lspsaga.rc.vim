@@ -18,8 +18,8 @@ nnoremap <silent><leader>gs <cmd>lua require('lspsaga.signaturehelp').signature_
 nnoremap <silent><leader>gr <cmd>lua require('lspsaga.rename').rename()<CR>
 " close rename win use <C-c> in insert mode or `q` in noremal mode or `:q`
 nnoremap <silent><leader>gv <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+nnoremap <silent><leader>gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
 
-nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
 " -- jump diagnostic
 nnoremap <silent> [e :Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> ]e :Lspsaga diagnostic_jump_prev<CR>

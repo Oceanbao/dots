@@ -9,7 +9,6 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim' " or other package manager
 
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ggandor/lightspeed.nvim'
 
 Plug 'tpope/vim-fugitive'
@@ -21,10 +20,20 @@ Plug 'sheerun/vim-polyglot'
 Plug 'Yggdroot/indentLine'
 Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
-Plug 'windwp/nvim-ts-autotag'
 Plug 'plasticboy/vim-markdown'
 
 if has("nvim")
+  Plug 'windwp/nvim-ts-autotag'
+  Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+  " nvim-cmp
+  " Plug 'hrsh7th/cmp-nvim-lsp'
+  " Plug 'hrsh7th/cmp-buffer'
+  " Plug 'hrsh7th/cmp-path'
+  " Plug 'hrsh7th/cmp-cmdline'
+  " Plug 'hrsh7th/nvim-cmp'
+  " Plug 'L3MON4D3/LuaSnip'
+  " Plug 'onsails/lspkind-nvim'
+
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'kristijanhusak/defx-git'
   Plug 'kristijanhusak/defx-icons'
@@ -33,7 +42,6 @@ if has("nvim")
   " Plug 'glepnir/lspsaga.nvim'
   Plug 'tami5/lspsaga.nvim', { 'branch': 'nvim6.0' }
   Plug 'folke/lsp-colors.nvim'
-  Plug 'nvim-lua/completion-nvim'
   Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'nvim-lua/popup.nvim'
