@@ -101,7 +101,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export EDITOR='nvim'
+export EDITOR='lvim'
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -132,7 +132,7 @@ alias rm="rm -rfIv"
 alias sd="sudo "
 alias ddu="du -sh * | sort -hr | head -10"
 alias pytest="pytest -l --tb=short"
-alias vim="nvim"
+alias vim="lvim"
 alias ll="exa -alh --sort=size"
 alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
