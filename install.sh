@@ -222,6 +222,7 @@ install_rust() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
 
   curl https://sh.rustup.rs -sSf | sh
+  source ~/.cargo/env
 }
 
 install_python() {
