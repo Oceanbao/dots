@@ -209,16 +209,13 @@ EOF
 # --------------- Unit Installers ---------------
 
 install_homebrew() {
-  sudo -i -u $USER bash <<'EOF'
-printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Assume zsh installed and run as main user
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-EOF
+  # Assume zsh installed and run as main user
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 
 install_rust() {
