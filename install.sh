@@ -293,6 +293,7 @@ while [[ -n $1 ]]; do
     dotup)
       install_python
       install_node
+      install_rust
       install_neovim
       install_dots
       install_go
