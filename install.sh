@@ -174,101 +174,124 @@ init_user_ubun() {
 }
 
 install_dots() {
-  set -eo pipefail
+  sudo -i -u $USER bash <<'EOF'
+set -eo pipefail
 
-  pip install -Uq pip
-  pip install -q pynvim
+pip install -Uq pip
+pip install -q pynvim
 
-  # OMZ
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
+# OMZ
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
 
-  rm -rf ~/.oh-my-zsh
-  curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+rm -rf ~/.oh-my-zsh
+curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 
-  # powerline10k
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
-  rm -rf ~/.zshrc
-  ln -sfn ~/dots/zshrc ~/.zshrc
+# powerline10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+rm -rf ~/.zshrc
+ln -sfn ~/dots/zshrc ~/.zshrc
 
-  # git
-  rm -rf ~/.gitconfig
-  ln -sfn ~/dots/gitconfig ~/.gitconfig
+# git
+rm -rf ~/.gitconfig
+ln -sfn ~/dots/gitconfig ~/.gitconfig
 
-  # tmux
-  rm -rf ~/.tmux.conf
-  ln -sfn ~/dots/tmux.conf ~/.tmux.conf
+# tmux
+rm -rf ~/.tmux.conf
+ln -sfn ~/dots/tmux.conf ~/.tmux.conf
 
-  # fzf
-  rm -rf ~/.fzf
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+# fzf
+rm -rf ~/.fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+
+EOF
 }
 
 # --------------- Unit Installers ---------------
 
 install_homebrew() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  # Assume zsh installed and run as main user
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# Assume zsh installed and run as main user
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+EOF
 }
 
 install_rust() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
 
-  curl https://sh.rustup.rs -sSf | sh
-  source ~/.cargo/env
+curl https://sh.rustup.rs -sSf | sh
+
+EOF
 }
 
 install_python() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing PYTHON..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing PYTHON..." "$(printf "%0.1s" ={1..20})"
 
-  brew install python@3.9
-  sudo ln -sfn $(command -v python3) /usr/bin/python
-  sudo ln -sfn $(command -v pip3) /usr/bin/pip
+brew install python@3.9
+sudo ln -sfn $(command -v python3) /usr/bin/python
+sudo ln -sfn $(command -v pip3) /usr/bin/pip
+
+EOF
 }
 
 install_neovim() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
-  brew install neovim
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
+brew install neovim
 
-  # LunarVim
-  bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
-  sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
+# LunarVim
+bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
+sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
+
+EOF
 }
 
 install_node() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-  export NVM_DIR=~/.nvm
-  . ~/.nvm/nvm.sh
-  nvm install --lts
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR=~/.nvm
+. ~/.nvm/nvm.sh
+nvm install --lts
+
+EOF
 }
 
 install_go() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
-  local file="go1183.tar.gz"
-  wget https://go.dev/dl/go1.18.3.linux-amd64.tar.gz -O "$file"
-  sudo rm -rf /usr/local/go && \
-    sudo tar -C /usr/local -xzf "$file"
-  rm -rf "$file"
+local file="go1183.tar.gz"
+wget https://go.dev/dl/go1.18.3.linux-amd64.tar.gz -O "$file"
+sudo rm -rf /usr/local/go && \
+  sudo tar -C /usr/local -xzf "$file"
+rm -rf "$file"
+
+EOF
 }
 
 install_cli() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
+  sudo -i -u $USER bash <<'EOF'
+printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
 
-  brew install exa
-  brew install ripgrep
-  brew install duf
-  brew install bat
-  brew tap tgotwig/linux-dust && brew install dust
+brew install exa
+brew install ripgrep
+brew install duf
+brew install bat
+brew tap tgotwig/linux-dust && brew install dust
+
+EOF
 }
 
 # ------------- Parse CLI ---------------
