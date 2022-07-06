@@ -177,9 +177,6 @@ install_dots() {
   sudo -i -u $USER bash <<'EOF'
 set -eo pipefail
 
-pip install -Uq pip
-pip install -q pynvim
-
 # OMZ
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing OMZ..." "$(printf "%0.1s" ={1..20})"
 
@@ -251,6 +248,12 @@ brew install neovim
 
 # LunarVim
 bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
+
+EOF
+}
+
+install_lunarvim_config() {
+  sudo -i -u $USER bash <<'EOF'
 sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
 
 EOF
@@ -316,10 +319,11 @@ while [[ -n $1 ]]; do
       ;;
     dotup)
       install_python
+      install_dots
       install_node
       install_rust
       install_neovim
-      install_dots
+      install_lunarvim_config
       install_go
       install_cli
       ;;
