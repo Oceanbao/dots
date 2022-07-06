@@ -319,10 +319,12 @@ while [[ -n $1 ]]; do
       install_dots
       install_node
       install_rust
-      install_neovim
-      install_lunarvim_config
       install_go
       install_cli
+      ;;
+    vim)
+      install_neovim
+      install_lunarvim_config
       ;;
     *)
       error_exit "Unknown option $1";
