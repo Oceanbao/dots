@@ -16,13 +16,17 @@ lvim.colorscheme = "onedarker"
 -- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
-lvim.leader = "space"
+-- lvim.leader = "space"
+lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
+
+-- Remap Lightspeed , to avoid leader
+vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
 
 -- Glow
 vim.cmd("noremap <leader>p :Glow<CR>")

@@ -75,7 +75,6 @@ usage() {
   printf "%s\n" "       ${PROGRAMME} {init}"
   printf "%s\n" "       ${PROGRAMME} {brew}"
   printf "%s\n" "       ${PROGRAMME} {dotup}"
-  printf "%s\n" "       ${PROGRAMME} {post}"
 }
 
 help_message() {
@@ -87,10 +86,9 @@ $(usage)
 
   Options:
   -h, --help    Display this help message and exit.
-  init          Create user and install basics.
-  brew          Install Linuxbrew.
-  dotup         Install dots.
-  post          Install node, nvim plugins, go
+  init          Create user and install basics (as root)
+  brew          Install Linuxbrew (as USER).
+  dotup         Install dots (as USER).
 
   NOTE: superuser is required to run this script.
 
@@ -195,41 +193,6 @@ install_dots() {
   rm -rf ~/.zshrc
   ln -sfn ~/dots/zshrc ~/.zshrc
 
-  # neovim plugins
-  sh -c 'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-  rm -rf ~/.config/nvim
-  mkdir -p ~/.config/nvim
-  ln -sfn ~/dots/init.vim ~/.config/nvim/init.vim
-  ln -sfn ~/dots/plug.vim ~/.config/nvim/plug.vim
-  ln -sfn ~/dots/maps.vim ~/.config/nvim/maps.vim
-
-  rm -rf ~/.config/nvim/after
-  mkdir -p ~/.config/nvim/after/plugin
-  ln -sfn ~/dots/after/plugin/lexima.rc.vim ~/.config/nvim/after/plugin/lexima.rc.vim
-  ln -sfn ~/dots/after/plugin/lsp-colors.rc.vim ~/.config/nvim/after/plugin/lsp-colors.rc.vim
-  ln -sfn ~/dots/after/plugin/fugitive.rc.vim ~/.config/nvim/after/plugin/fugitive.rc.vim
-  ln -sfn ~/dots/after/plugin/web-devicons.rc.vim ~/.config/nvim/after/plugin/web-devicons.rc.vim
-  ln -sfn ~/dots/after/plugin/lspsaga.rc.vim ~/.config/nvim/after/plugin/lspsaga.rc.vim
-  ln -sfn ~/dots/after/plugin/completion.rc.vim ~/.config/nvim/after/plugin/completion.rc.vim
-  ln -sfn ~/dots/after/plugin/telescope.rc.vim ~/.config/nvim/after/plugin/telescope.rc.vim
-  ln -sfn ~/dots/after/plugin/treesitter.rc.vim ~/.config/nvim/after/plugin/treesitter.rc.vim
-  ln -sfn ~/dots/after/plugin/lualine.rc.lua ~/.config/nvim/after/plugin/lualine.rc.lua
-  ln -sfn ~/dots/after/plugin/tabline.rc.vim ~/.config/nvim/after/plugin/tabline.rc.vim
-  ln -sfn ~/dots/after/plugin/defx.rc.vim ~/.config/nvim/after/plugin/defx.rc.vim
-  ln -sfn ~/dots/after/plugin/lspconfig.rc.vim ~/.config/nvim/after/plugin/lspconfig.rc.vim
-
-  # custom lua scripts
-  cp -r ~/dots/lua ~/.config/nvim/.
-
-  mkdir ~/.config/nvim/themes
-  ln -sfn ~/dots/onedark.vim ~/.config/nvim/themes/onedark.vim
-  ln -sfn ~/dots/jellybeans.vim ~/.config/nvim/themes/jellybeans.vim
-  ln -sfn ~/dots/molokai.vim ~/.config/nvim/themes/molokai.vim
-
-  ln -sfn ~/dots/vimrc.lightline ~/.vimrc.lightline
-
   # git
   rm -rf ~/.gitconfig
   ln -sfn ~/dots/gitconfig ~/.gitconfig
@@ -249,6 +212,10 @@ install_homebrew() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Assume zsh installed and run as main user
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 
 install_rust() {
@@ -257,10 +224,8 @@ install_rust() {
   curl https://sh.rustup.rs -sSf | sh
 }
 
-install_python_brew() {
-  # Assume zsh installed and run as main user
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+install_python() {
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing PYTHON..." "$(printf "%0.1s" ={1..20})"
 
   brew install python@3.9
   sudo ln -sfn $(command -v python3) /usr/bin/python
@@ -270,6 +235,10 @@ install_python_brew() {
 install_neovim() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
   brew install neovim
+
+  # LunarVim
+  bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
+  sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
 }
 
 install_node() {
@@ -284,35 +253,15 @@ install_node() {
 install_go() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
-  wget https://go.dev/dl/go1.18.linux-amd64.tar.gz -O go118.tar.gz
+  local file="go1183.tar.gz"
+  wget https://go.dev/dl/go1.18.3.linux-amd64.tar.gz -O "$file"
   sudo rm -rf /usr/local/go && \
-    sudo tar -C /usr/local -xzf go118.tar.gz
-  rm -rf go118.tar.gz
-}
-
-install_nvim_plugins() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Install NVIM PLUGINS..." "$(printf "%0.1s" ={1..20})"
-
-  # neovim
-  npm install -g neovim
-
-  # LSP Install
-  npm install -g pyright
-  npm install -g bash-language-server
-  npm install -g typescript typescript-language-server
-  npm install -g diagnostic-languageserver
-  npm install -g eslint_d prettier
-  npm install -g tree-sitter-cli
-  [[ -d ~/.local/bin ]] || mkdir ~/.local/bin
-  curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
-  chmod +x ~/.local/bin/rust-analyzer
-
-  # Finally, nvim INIT
-  #nvim '+PlugInstall | qa'
+    sudo tar -C /usr/local -xzf "$file"
+  rm -rf "$file"
 }
 
 install_cli() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
+  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
 
   brew install exa
   brew install ripgrep
@@ -342,11 +291,10 @@ while [[ -n $1 ]]; do
       install_homebrew
       ;;
     dotup)
-      install_python_brew
+      install_python
+      install_node
       install_neovim
       install_dots
-      install_node
-      install_nvim_plugins
       install_go
       install_cli
       ;;
