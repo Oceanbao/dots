@@ -16,6 +16,8 @@ set -eo pipefail
 PROGRAMME="${0##*/}"
 VERSION="0.1.1"
 LIBS= # Insert pathnames of any required external shell libraries
+OS_TYPE="$(cat /etc/issue)"
+
 
 # ------------- Colors -------------
  
@@ -120,8 +122,6 @@ init() {
     read -r USER
   fi
 
-  OS_TYPE="$(cat /etc/issue)"
-
   # Ascertain Linux distro
   if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]] || [[ "$OS_TYPE" == *"Pop"* ]]; then
     init_user_ubun
@@ -143,7 +143,8 @@ init_user_arch() {
   if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g wheel "$USER"
     passwd "$USER"
-    sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
+    sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+    sed -i -e 's/# %sudo ALL=(ALL:ALL) ALL/%sudo ALL=(ALL:ALL) ALL/' /etc/sudoers
   fi
 }
 
@@ -212,7 +213,7 @@ EOF
 install_homebrew() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-  sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   # Assume zsh installed and run as main user
   echo "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"" >> ~/.zprofile
@@ -316,11 +317,11 @@ while [[ -n $1 ]]; do
       install_homebrew
       ;;
     dotup)
-      install_python
+      [[ "$OS_TYPE" == *"Arch"* ]] || install_python
       install_dots
       install_node
       install_rust
-      install_go
+      [[ "$OS_TYPE" == *"Arch"* ]] || install_go
       install_cli
       ;;
     vim)
