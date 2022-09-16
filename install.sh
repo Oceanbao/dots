@@ -13,7 +13,7 @@
 
 set -eo pipefail
 
-PROGNAME="${0##*/}"
+PROGRAMME="${0##*/}"
 VERSION="0.1.1"
 LIBS= # Insert pathnames of any required external shell libraries
 
@@ -58,7 +58,7 @@ clean_up() { # Perform pre-exit housekeeping
 error_exit() {
   local error_message="$1"
   printf "%s: %s\n" \
-    "${error_message:-"Unknown Error"}" >&2
+    "${error_message}" "Unknown Error" >&2
   clean_up
   pretty_print "Error Exit"
   exit 1
@@ -79,7 +79,7 @@ usage() {
 
 help_message() {
   cat <<- _EOF_
-$PROGNAME ver. $VERSION
+$PROGRAMME ver. $VERSION
 Ghostinshell - Initialising Shell for ghost Ocean.
 
 $(usage)
@@ -110,14 +110,14 @@ init() {
   center "INIT user"
 
   printf "CREATE NEW USER? <Y/N>\n"
-  read NEW
+  read -r NEW
 
   if [[ "$NEW" == "Y" ]]; then
     printf "ENTER <USER>: \n"
-    read USER
+    read -r USER
   elif [[ "$NEW" == "N" ]]; then
     printf "ENTER <USER>: \n"
-    read USER
+    read -r USER
   fi
 
   OS_TYPE="$(cat /etc/issue)"
@@ -136,7 +136,8 @@ init() {
 
 init_user_arch() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- ARCH LINUX" "$(printf "%0.1s" ={1..20})"
-  pacman -Syu && yes | pacman -S sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
+  pacman -Syu
+  yes | pacman -S base-devel gcc sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
   # Install python3
   yes | pacman -S python python-pip python-setuptools || true
   if [[ "$NEW" == "Y" ]]; then
@@ -174,7 +175,7 @@ init_user_ubun() {
 }
 
 install_dots() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 set -eo pipefail
 
 # OMZ
@@ -211,15 +212,15 @@ EOF
 install_homebrew() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   # Assume zsh installed and run as main user
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+  echo "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"" >> ~/.zprofile
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 
 install_rust() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
 
 curl https://sh.rustup.rs -sSf | sh
@@ -228,7 +229,7 @@ EOF
 }
 
 install_python() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing PYTHON..." "$(printf "%0.1s" ={1..20})"
 
 brew install python@3.9
@@ -239,7 +240,7 @@ EOF
 }
 
 install_neovim() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
 brew install neovim
 
@@ -250,14 +251,14 @@ EOF
 }
 
 install_lunarvim_config() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
 
 EOF
 }
 
 install_node() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -269,7 +270,7 @@ EOF
 }
 
 install_go() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
 local file="go1183.tar.gz"
@@ -282,7 +283,7 @@ EOF
 }
 
 install_cli() {
-  sudo -i -u $USER bash <<'EOF'
+  sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
 
 brew install exa
