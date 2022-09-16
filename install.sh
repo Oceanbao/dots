@@ -137,9 +137,9 @@ init() {
 init_user_arch() {
   printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- ARCH LINUX" "$(printf "%0.1s" ={1..20})"
   pacman -Syu
-  yes | pacman -S base-devel gcc sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
+  pacman -S --noconfirm base-devel gcc sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
   # Install python3
-  yes | pacman -S python python-pip python-setuptools || true
+  pacman -S --noconfirm python python-pip python-setuptools || true
   if [[ "$NEW" == "Y" ]]; then
     useradd -m -s "$(command -v zsh)" -g wheel "$USER"
     passwd "$USER"
