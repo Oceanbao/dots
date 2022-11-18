@@ -107,6 +107,7 @@ lvim.builtin.treesitter.rainbow.enable = true
 require("lvim.lsp.manager").setup("marksman")
 require("lvim.lsp.manager").setup("html")
 require("lvim.lsp.manager").setup("tailwindcss")
+require("lvim.lsp.manager").setup("bashls")
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
 -- ---`:LvimInfo` lists which server(s) are skiipped for the current filetype

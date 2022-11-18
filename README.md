@@ -17,10 +17,10 @@
     <img src="images/logo.png" alt="Logo" width="882" height="635">
   </a>
 
-<h3 align="center">Ocean Shell</h3>
+<h3 align="center">Ghost in Shell</h3>
 
   <p align="center">
-    Setup code for Shell on Linux OS.
+    Setup code for Shell on Linux.
     <br />
     <a href="https://github.com/Oceanbao/dots"><strong>Explore the docs »</strong></a>
     <br />
@@ -34,7 +34,7 @@
 </div>
 
 <!-- TABLE OF CONTENTS -->
-<details>
+<details open>
   <summary>Table of Contents</summary>
   <ol>
     <li>
@@ -63,7 +63,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](#)
 
 Shell environment setup.
 
@@ -72,10 +72,17 @@ Shell environment setup.
 ### Built With
 
 - [Zsh](https://zsh.org)
-- [Oh-My-Zsh](https://ohmyz.sh)
+  - [Oh-My-Zsh](https://ohmyz.sh)
 - [Neovim](https://neovim.io)
-  - and plugins
+  - [LunarVim](https://lunarvim.org/)
 - [Tmux](https://github.com/tmux/tmux)
+- [Alacritty](https://alacritty.org/)
+- Tools
+  - [Linuxbrew](https://docs.brew.sh/Homebrew-on-Linux)
+  - [z navigation](https://github.com/rupa/z)
+  - [powerline10k](https://github.com/romkatv/powerlevel10k)
+  - [fzf](https://github.com/junegunn/fzf)
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -94,39 +101,38 @@ The following shows how to use this shell setup.
 
 1. As `root` user download this repo somewhere - e.g. `/tmp`
    ```bash
-   (root): git clone https://github.com/Oceanbao/dots.git
+   root$ git clone https://github.com/Oceanbao/dots.git
    ```
-2. Step1: create new user (or existing user) and install basic libs
+2. Create new user (or existing user) and install basic libs
    ```sh
-   (root): bash dots/main.sh init
+   root$ ./dots/install.sh init
+   # Follow the instruction to create/use `USER`
    ```
-   - Follow the instruction to create/use `USER`
-3. Step2: install Linuxbrew via `USER` shell (this is required by Linuxbrew)
+3. Install Linuxbrew via `USER` shell (this is required by Linuxbrew)
    ```sh
-   (USER): git clone https://github.com/Oceanbao/dots.git
-   (USER): bash dots/main.sh brew
+   USER$ git clone https://github.com/Oceanbao/dots.git
+   USER$ ./dots/install.sh brew
    ```
-4. Step3: as `root` install all dotfiles (see TODO: for detail)
+4. As `root` install all dotfiles
    ```sh
-   (root): bash dots/main.sh dotup
+   root$ ./dots/install.sh dotup
    ```
-5. Step4: as `USER` install post-setups (see TODO: for detail)
+5. As `USER` install post-setups
    ```sh
-   (USER): bash dots/main.sh post
+   # neovim
+   USER$ ./dots/install.sh vim
    ```
-6. Step5: setup for zsh theme and neovim
-  ```sh
-  # Go to USER shell
-  (root): su - $USER
-  # This will prompt powerline13k setup
-  # Then setup vim by enter vim
-  # Run the following in vim's cmd
-  :PluginInstall
-  # Exit and re-enter vim to wait for treesitter setup
-  # Setup defx
-  :remotePluginInstall
-  TODO:
-  ```
+6. Setup for zsh theme and neovim
+   ```sh
+   # Go to USER shell
+   root$ su - $USER
+   # This will prompt powerline13k setup
+   # Then setup vim by enter vim
+
+   # LunarVim
+   vim
+   # run :PackerSync
+    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -136,21 +142,13 @@ The following shows how to use this shell setup.
 
 Once the **Installation** is successful, `USER` shell will have:
 
-- Tmux + Lualine combo
-
-[![Shell Screen Shot][shell-screenshot]](images/shell.jpg)
-
-- Neovim with defx
-
-[![Defx Screen Shot][defx-screenshot]](images/defx.jpg)
-
 - Neovim with Completion
 
-[![Completion Screen Shot][completion-screenshot]](images/completion.jpg)
+[![Completion Screen Shot][completion-screenshot]](#)
 
 - Neovim with Telescope
 
-[![Telescope Screen Shot][telescope-screenshot]](images/telescope.jpg)
+[![Telescope Screen Shot][telescope-screenshot]](#)
 
 <!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
 
@@ -207,7 +205,7 @@ Ocean Bao - [@oceanbao](https://twitter.com/oceanbao) - baobaobiz@gmail.com
 
 ## Acknowledgments
 
-- Heavily inspired by [craftzdog's dotfiles](https://github.com/craftzdog/dotfiles-public)
+- Inspired by [craftzdog's dotfiles](https://github.com/craftzdog/dotfiles-public)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -216,8 +214,6 @@ Ocean Bao - [@oceanbao](https://twitter.com/oceanbao) - baobaobiz@gmail.com
 
 [license-shield]:https://img.shields.io/github/license/oceanbao/dots.svg?style=for-the-badge 
 [license-url]: https://github.com/Oceanbao/dots/blob/master/LICENSE.txt
-[product-screenshot]: images/product.jpg
-[shell-screenshot]: images/shell.jpg
-[defx-screenshot]: images/defx.jpg
-[completion-screenshot]: images/completion.jpg
-[telescope-screenshot]: images/telescope.jpg
+[product-screenshot]: images/product.webp
+[completion-screenshot]: images/autocomplete.webp
+[telescope-screenshot]: images/telescope.webp

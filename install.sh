@@ -4,8 +4,8 @@
 
 # Copyright 2022, Ocean Bao <baobaobiz@gmail.com>
 
-# Usage: demo [-h|--help]
-#        demo [-a]
+# Usage: ./install [-h|--help]
+#        ./install [-a]
 
 # Revision history:
 # 2022-03-01 Created by new_script.bash ver. 3.5.2
@@ -48,6 +48,25 @@ COLOR_WHITE="\033[1;37m"
 COLOR_END="\033[0m"
 
 # ------------- Utils --------------
+
+all_colors() {
+  echo -e "\n\n**** ${COLOR_RED}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_RED_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_GREEN}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_GREEN_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_ORANGE}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_YELLOW}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_BLUE}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_BLUE_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_PURPLE}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_PURPLE_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_CYAN_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_GRAY}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_GRAY_LIGHT}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_BLACK}$1${COLOR_END} ****\n"
+  echo -e "\n\n**** ${COLOR_WHITE}$1${COLOR_END} ****\n"
+}
 
 pretty_print() {
   echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
