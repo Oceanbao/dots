@@ -12,7 +12,7 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.colorscheme = "onedarker"
-lvim.colorscheme = "codedark"
+-- lvim.colorscheme = "codedark"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -28,12 +28,10 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.insert_mode["kj"] = "<ESC>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<leader><S-g>"] = ":Glow<CR>"
 
 -- Remap Lightspeed , to avoid leader
 vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
-
--- Glow
-vim.cmd("noremap <leader>p :Glow<CR>")
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
@@ -72,6 +70,17 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+
+-- indent_blankline
+-- vim.opt.list = true
+-- vim.opt.listchars:append "space:⋅"
+-- vim.opt.listchars:append "eol:↴"
+
+require("indent_blankline").setup {
+  space_char_blankline = " ",
+  show_current_context = true,
+  show_current_context_start = true,
+}
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -128,20 +137,21 @@ require("lvim.lsp.manager").setup("bashls")
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
---   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "black", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" } },
+  { command = "beautysh", filetypes = { "bash", "sh" } },
+  --   {
+  --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+  --     command = "prettier",
+  --     ---@usage arguments to pass to the formatter
+  --     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+  --     extra_args = { "--print-with", "100" },
+  --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+  --     filetypes = { "typescript", "typescriptreact" },
+  --   },
+}
 
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
@@ -183,18 +193,7 @@ lvim.plugins = {
   -- {"folke/tokyonight.nvim"},
   {
     "ggandor/lightspeed.nvim",
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
     event = "BufRead",
-    setup = function()
-      vim.g.indentLine_enabled = 1
-      vim.g.indent_blankline_char = "▏"
-      vim.g.indent_blankline_filetype_exclude = { "help", "terminal", "dashboard" }
-      vim.g.indent_blankline_buftype_exclude = { "terminal" }
-      vim.g.indent_blankline_show_trailing_blankline_indent = false
-      vim.g.indent_blankline_show_first_indent_level = false
-    end
   },
   {
     "windwp/nvim-ts-autotag",
@@ -214,11 +213,8 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
-  -- brew install glow
-  -- GlowInstall
   {
-    "npxbr/glow.nvim",
-    ft = { "markdown" }
+    "ellisonleao/glow.nvim",
   },
 }
 
