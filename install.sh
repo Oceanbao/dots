@@ -20,7 +20,7 @@ OS_TYPE="$(cat /etc/issue)"
 
 
 # ------------- Colors -------------
- 
+
 COLOR_RED="\033[0;31m"
 COLOR_RED_LIGHT="\033[1;31m"
 
@@ -29,14 +29,14 @@ COLOR_GREEN_LIGHT="\033[1;32m"
 
 COLOR_ORANGE="\033[0;33m"
 COLOR_YELLOW="\033[1;33m"
- 
+
 COLOR_BLUE="\033[0;34m"
 COLOR_BLUE_LIGHT="\033[1;34m"
 
 COLOR_PURPLE="\033[0;35m"
 COLOR_PURPLE_LIGHT="\033[1;35m"
 
-COLOR_CYAN="\033[0;36m" 
+COLOR_CYAN="\033[0;36m"
 COLOR_CYAN_LIGHT="\033[1;36m"
 
 COLOR_GRAY="\033[1;30m"
@@ -50,56 +50,56 @@ COLOR_END="\033[0m"
 # ------------- Utils --------------
 
 all_colors() {
-  echo -e "\n\n**** ${COLOR_RED}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_RED_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_GREEN}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_GREEN_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_ORANGE}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_YELLOW}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_BLUE}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_BLUE_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_PURPLE}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_PURPLE_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_CYAN_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_GRAY}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_GRAY_LIGHT}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_BLACK}$1${COLOR_END} ****\n"
-  echo -e "\n\n**** ${COLOR_WHITE}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_RED}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_RED_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_GREEN}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_GREEN_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_ORANGE}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_YELLOW}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_BLUE}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_BLUE_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_PURPLE}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_PURPLE_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_CYAN_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_GRAY}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_GRAY_LIGHT}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_BLACK}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_WHITE}$1${COLOR_END} ****\n"
 }
 
 pretty_print() {
-  echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
+    echo -e "\n\n**** ${COLOR_CYAN}$1${COLOR_END} ****\n"
 }
 
 clean_up() { # Perform pre-exit housekeeping
-  return
+    return
 }
 
 error_exit() {
-  local error_message="$1"
-  printf "%s: %s\n" \
-    "${error_message}" "Unknown Error" >&2
-  clean_up
-  pretty_print "Error Exit"
-  exit 1
+    local error_message="$1"
+    printf "%s: %s\n" \
+        "${error_message}" "Unknown Error" >&2
+    clean_up
+    pretty_print "Error Exit"
+    exit 1
 }
 
 graceful_exit() {
-  pretty_print "Gracefully Exit"
-  clean_up
-  exit
+    pretty_print "Gracefully Exit"
+    clean_up
+    exit
 }
 
 usage() {
-  printf "%s\n" "Usage: ${PROGRAMME} {-h|--help}"
-  printf "%s\n" "       ${PROGRAMME} {init}"
-  printf "%s\n" "       ${PROGRAMME} {brew}"
-  printf "%s\n" "       ${PROGRAMME} {dotup}"
+    printf "%s\n" "Usage: ${PROGRAMME} {-h|--help}"
+    printf "%s\n" "       ${PROGRAMME} {init}"
+    printf "%s\n" "       ${PROGRAMME} {brew}"
+    printf "%s\n" "       ${PROGRAMME} {dotup}"
 }
 
 help_message() {
-  cat <<- _EOF_
+    cat <<- _EOF_
 $PROGRAMME ver. $VERSION
 Ghostinshell - Initialising Shell for ghost Ocean.
 
@@ -114,88 +114,88 @@ $(usage)
   NOTE: superuser is required to run this script.
 
 _EOF_
- return
+    return
 }
 
 center() {
-  termwidth="$(tput cols)"
-  padding="$(printf '%0.1s' ={1..500})"
-  printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
+    termwidth="$(tput cols)"
+    padding="$(printf '%0.1s' ={1..500})"
+    printf '%*.*s %s %*.*s\n' 0 "$(((termwidth-2-${#1})/2))" "$padding" "$1" 0 "$(((termwidth-1-${#1})/2))" "$padding"
 }
 
 # ====== Main ======
 
 
 init() {
-  # Main process - initialise shell with all steps.
-  center "INIT user"
+    # Main process - initialise shell with all steps.
+    center "INIT user"
 
-  printf "CREATE NEW USER? <Y/N>\n"
-  read -r NEW
+    printf "CREATE NEW USER? <Y/N>\n"
+    read -r NEW
 
-  if [[ "$NEW" == "Y" ]]; then
-    printf "ENTER <USER>: \n"
-    read -r USER
-  elif [[ "$NEW" == "N" ]]; then
-    printf "ENTER <USER>: \n"
-    read -r USER
-  fi
+    if [[ "$NEW" == "Y" ]]; then
+        printf "ENTER <USER>: \n"
+        read -r USER
+    elif [[ "$NEW" == "N" ]]; then
+        printf "ENTER <USER>: \n"
+        read -r USER
+    fi
 
-  # Ascertain Linux distro
-  if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]] || [[ "$OS_TYPE" == *"Pop"* ]]; then
-    init_user_ubun
-  elif [[ "$OS_TYPE" == *"Arch"* ]]; then
-    init_user_arch
-  else
-    error_exit "Only [debian, ubuntu, arch] supported."
-  fi
+    # Ascertain Linux distro
+    if [[ "$OS_TYPE" == *"Debian"* ]] || [[ "$OS_TYPE" == *"Ubuntu"* ]] || [[ "$OS_TYPE" == *"Pop"* ]]; then
+        init_user_ubun
+    elif [[ "$OS_TYPE" == *"Arch"* ]]; then
+        init_user_arch
+    else
+        error_exit "Only [debian, ubuntu, arch] supported."
+    fi
 
-  pretty_print "Init Done"
+    pretty_print "Init Done"
 }
 
 init_user_arch() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- ARCH LINUX" "$(printf "%0.1s" ={1..20})"
-  pacman -Syu
-  pacman -S --noconfirm base-devel gcc sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
-  # Install python3
-  pacman -S --noconfirm python python-pip python-setuptools || true
-  if [[ "$NEW" == "Y" ]]; then
-    useradd -m -s "$(command -v zsh)" -g wheel "$USER"
-    passwd "$USER"
-    sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-    sed -i -e 's/# %sudo ALL=(ALL:ALL) ALL/%sudo ALL=(ALL:ALL) ALL/' /etc/sudoers
-  fi
+    printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- ARCH LINUX" "$(printf "%0.1s" ={1..20})"
+    pacman -Syu
+    pacman -S --noconfirm base-devel gcc sudo curl wget tmux exa git zsh ripgrep man-db man-pages || true
+    # Install python3
+    pacman -S --noconfirm python python-pip python-setuptools || true
+    if [[ "$NEW" == "Y" ]]; then
+        useradd -m -s "$(command -v zsh)" -g wheel "$USER"
+        passwd "$USER"
+        sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+        sed -i -e 's/# %sudo ALL=(ALL:ALL) ALL/%sudo ALL=(ALL:ALL) ALL/' /etc/sudoers
+    fi
 }
 
 init_user_ubun() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU/DEBIAN LINUX" "$(printf "%0.1s" ={1..20})"
+    printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "INIT USER -- UBUNTU/DEBIAN LINUX" "$(printf "%0.1s" ={1..20})"
 
-  # Essential OS installation
-  apt update && apt install -y \
-                    sudo \
-                    curl \
-                    zip \
-                    wget \
-                    tmux \
-                    procps \
-                    file \
-                    git \
-                    zsh \
-                    manpages-dev \
-                    build-essential
+    # Essential OS installation
+    apt update && apt install -y \
+        sudo \
+        curl \
+        zip \
+        wget \
+        tmux \
+        procps \
+        file \
+        git \
+        zsh \
+        manpages-dev \
+        build-essential
 
-  # Create user
-  if [[ "$NEW" == "Y" ]]; then
-    useradd -m -s "$(command -v zsh)" -g sudo "$USER"
-    passwd "$USER"
-  else
-    usermod -s "$(command -v zsh)" -aG sudo "$USER"
-  fi
+    # Create user
+    if [[ "$NEW" == "Y" ]]; then
+        useradd -m -s "$(command -v zsh)" -g sudo "$USER"
+        passwd "$USER"
+    else
+        usermod -s "$(command -v zsh)" -aG sudo "$USER"
+    fi
 
 }
 
 install_dots() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 set -eo pipefail
 
 # OMZ
@@ -230,17 +230,17 @@ EOF
 # --------------- Unit Installers ---------------
 
 install_homebrew() {
-  printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
+    printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing HOMEBREW..." "$(printf "%0.1s" ={1..20})"
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  # Assume zsh installed and run as main user
-  echo "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"" >> ~/.zprofile
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    # Assume zsh installed and run as main user
+    echo "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"" >> ~/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 
 install_rust() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing RUST..." "$(printf "%0.1s" ={1..20})"
 
 curl https://sh.rustup.rs -sSf | sh
@@ -249,7 +249,7 @@ EOF
 }
 
 install_python() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing PYTHON..." "$(printf "%0.1s" ={1..20})"
 
 brew install python@3.9
@@ -260,7 +260,7 @@ EOF
 }
 
 install_neovim() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NEOVIM..." "$(printf "%0.1s" ={1..20})"
 brew install neovim
 
@@ -271,14 +271,18 @@ EOF
 }
 
 install_lunarvim_config() {
-  sudo -i -u "$USER" bash <<'EOF'
-sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua 
+    sudo -i -u "$USER" bash <<'EOF'
+sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua
+
+# Plugins
+brew install fsouza/prettierd/prettierd
+pip install beautysh isort black
 
 EOF
 }
 
 install_node() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing NVM/NODE..." "$(printf "%0.1s" ={1..20})"
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -290,7 +294,7 @@ EOF
 }
 
 install_go() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing GO..." "$(printf "%0.1s" ={1..20})"
 
 local file="go1183.tar.gz"
@@ -303,7 +307,7 @@ EOF
 }
 
 install_cli() {
-  sudo -i -u "$USER" bash <<'EOF'
+    sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
 
 brew install exa
@@ -324,32 +328,32 @@ echo -e "\n**** ${COLOR_RED}BASH BEGIN${COLOR_END} ****\n"
 
 # MAIN
 while [[ -n $1 ]]; do
-  case $1 in
-    -h | --help)
-      help_message
-      graceful_exit
-      ;;
-    init)
-      init
-      ;;
-    brew)
-      install_homebrew
-      ;;
-    dotup)
-      [[ "$OS_TYPE" == *"Arch"* ]] || install_python
-      install_dots
-      install_node
-      install_rust
-      [[ "$OS_TYPE" == *"Arch"* ]] || install_go
-      install_cli
-      ;;
-    vim)
-      install_neovim
-      install_lunarvim_config
-      ;;
-    *)
-      error_exit "Unknown option $1";
-      ;;
-  esac
-  shift
+    case $1 in
+        -h | --help)
+            help_message
+            graceful_exit
+            ;;
+        init)
+            init
+            ;;
+        brew)
+            install_homebrew
+            ;;
+        dotup)
+            [[ "$OS_TYPE" == *"Arch"* ]] || install_python
+            install_dots
+            install_node
+            install_rust
+            [[ "$OS_TYPE" == *"Arch"* ]] || install_go
+            install_cli
+            ;;
+        vim)
+            install_neovim
+            install_lunarvim_config
+            ;;
+        *)
+            error_exit "Unknown option $1";
+            ;;
+    esac
+    shift
 done

@@ -29,6 +29,7 @@ lvim.keys.insert_mode["kj"] = "<ESC>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<leader><S-g>"] = ":Glow<CR>"
+lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm size=20 dir=. direction=horizontal<CR>"
 
 -- Remap Lightspeed , to avoid leader
 vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
@@ -142,6 +143,7 @@ formatters.setup {
   { command = "black", filetypes = { "python" } },
   { command = "isort", filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
+  { command = "prettierd" },
   --   {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   --     command = "prettier",
