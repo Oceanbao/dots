@@ -154,6 +154,10 @@ formatters.setup {
   --     filetypes = { "typescript", "typescriptreact" },
   --   },
 }
+local diagnosis = require "lvim.lsp.null-ls.linters"
+diagnosis.setup {
+  { command = "eslint_d" },
+}
 
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"

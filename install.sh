@@ -277,6 +277,7 @@ sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua
 # Plugins
 brew install fsouza/prettierd/prettierd
 pip install beautysh isort black
+npm install -g eslint_d
 
 EOF
 }
