@@ -159,6 +159,55 @@ generateqr () {
 	printf "$@" | curl -F-=\<- qrenco.de
 }
 
+run_gist() {
+  local gistKey=$1
+  local arg1=$2
+  echo "Gist keyword: ${gistKey}"
+
+  # Required input validation
+  if [[ "${gistKey}" == "" ]]; then
+    echo
+    echo "No gist Key provided as environment variable. Terminating..."
+    echo
+    return 0
+  fi
+
+  echo
+  echo "---------------------------------------------------"
+  echo "--- Executing script: ${gistKey}"
+  echo
+
+  bash <(gh gist view -r $(gh gist list | grep "${gistKey}" | awk '{print $1}')) "$arg1"
+  res_code=$?
+  if [ ${res_code} -ne 0 ] ; then
+    echo "--- [!] The script returned with an error code: ${res_code}"
+    echo "---------------------------------------------------"
+    return 1
+  fi
+
+  echo
+  echo "--- Script returned with a success code - OK"
+  echo "---------------------------------------------------"
+  return 0
+}
+
+ghclone () {
+  local keyword="$1"
+  # Required input validation
+  if [[ "${keyword}" == "" ]]; then
+    echo
+    echo "No repo keyword provided as environment variable. Terminating..."
+    echo
+    return 0
+  fi
+
+  echo
+  echo "---------------------------------------------------"
+  echo "--- GitHub repo: ${keyword}"
+  echo
+  gh repo clone $(gh repo list | grep "${keyword}" | awk '{print $1}') 
+}
+
 # export TERM=xterm-256color
 
 # export PUPP_CHROME="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
