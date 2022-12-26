@@ -11,8 +11,9 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
+-- lvim.transparent_window = true
 -- lvim.colorscheme = "onedarker"
--- lvim.colorscheme = "codedark"
+lvim.colorscheme = "codedark"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -120,6 +121,12 @@ require("lvim.lsp.manager").setup("marksman")
 require("lvim.lsp.manager").setup("html")
 require("lvim.lsp.manager").setup("tailwindcss")
 require("lvim.lsp.manager").setup("bashls")
+require("lvim.lsp.manager").setup("rust-analyzer", {
+  formatOnSave = {
+    command = "clippy"
+  },
+})
+
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
 -- ---`:LvimInfo` lists which server(s) are skiipped for the current filetype
@@ -155,11 +162,6 @@ formatters.setup {
   --   },
 }
 
-local diagnosis = require "lvim.lsp.null-ls.linters"
-diagnosis.setup {
-  { command = "eslint" },
-}
-
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
 -- linters.setup {
@@ -178,15 +180,25 @@ diagnosis.setup {
 --   },
 -- }
 
+local diagnosis = require "lvim.lsp.null-ls.linters"
+diagnosis.setup {
+  { command = "eslint_d" },
+  { command = "staticcheck", filetypes = { "go" } },
+}
+
+
 -- Additional Plugins
 lvim.plugins = {
+  {
+    "lunarvim/Onedarker.nvim",
+  },
   {
     "tomasiser/vim-code-dark",
   },
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
-      require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
+      require("colorizer").setup({ "css", "scss", "html", "javascript", "typescriptreact" }, {
         RGB = true, -- #RGB hex codes
         RRGGBB = true, -- #RRGGBB hex codes
         RRGGBBAA = true, -- #RRGGBBAA hex codes

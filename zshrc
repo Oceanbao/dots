@@ -140,6 +140,9 @@ alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 alias openports="sudo lsof -i -P -n | grep LISTEN"
+alias carr="cargo run"
+alias carc="cargo check"
+alias carb="cargo build --release"
 
 # Functions
 checkport() {
@@ -159,7 +162,7 @@ generateqr () {
 	printf "$@" | curl -F-=\<- qrenco.de
 }
 
-run_gist() {
+rungist() {
   local gistKey=$1
   local arg1=$2
   echo "Gist keyword: ${gistKey}"
@@ -177,7 +180,7 @@ run_gist() {
   echo "--- Executing script: ${gistKey}"
   echo
 
-  bash <(gh gist view -r $(gh gist list | grep "${gistKey}" | awk '{print $1}')) "$arg1"
+  bash <(gh gist view -r $(gh gist list -L 100 | grep "${gistKey}" | awk '{print $1}') | sed '/#!/,$!d') "$arg1"
   res_code=$?
   if [ ${res_code} -ne 0 ] ; then
     echo "--- [!] The script returned with an error code: ${res_code}"
@@ -206,6 +209,11 @@ ghclone () {
   echo "--- GitHub repo: ${keyword}"
   echo
   gh repo clone $(gh repo list | grep "${keyword}" | awk '{print $1}') 
+}
+
+greptop () {
+  local keyword="$1"
+  htop --pid $(pgrep -d "," -f "${keyword}")
 }
 
 # export TERM=xterm-256color
