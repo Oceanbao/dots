@@ -23,6 +23,7 @@ export LC_ALL=en_US.UTF-8
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
+export PATH=/usr/local/sbin:$PATH
 
 # NVN
 export NVM_DIR="$HOME/.nvm"
