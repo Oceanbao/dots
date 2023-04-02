@@ -42,3 +42,5 @@
 	user = oceanbao
 [diff]
   tool = nvimdiff
+[init]
+	defaultBranch = main

@@ -17,10 +17,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # brew
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+export PATH="/usr/local/sbin:$PATH"
 
 set -o vi
 export LANG=en_US.UTF-8
@@ -127,10 +128,12 @@ ulimit -n 12000
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+[[ $(command -v podman) ]] && alias docker="podman"
 alias dockc="docker container ls -a -s"
 alias dockcrm="docker container rm"
 alias dockb="DOCKER_BUILDKIT=1 docker build"
 alias rm="rm -rfIv"
+alias rmm="/bin/rm -rfv"
 alias sd="sudo "
 alias ddu="du -sh * | sort -hr | head -10"
 alias pytest="pytest -l --tb=short"
@@ -143,6 +146,7 @@ alias openports="sudo lsof -i -P -n | grep LISTEN"
 alias carr="cargo run"
 alias carc="cargo check"
 alias carb="cargo build --release"
+alias showbattery="system_profiler SPPowerDataType | egrep -i 'capacity|charge|cycle|mah'"
 
 # Functions
 checkport() {
@@ -216,6 +220,11 @@ greptop () {
   htop --pid $(pgrep -d "," -f "${keyword}")
 }
 
+lsoff () {
+  local keyword="$1"
+  lsof -nP +c 15 | grep "${keyword}"
+}
+
 # export TERM=xterm-256color
 
 # export PUPP_CHROME="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
@@ -236,3 +245,8 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export WASMER_DIR="/home/vagrant/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/Users/dele/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end

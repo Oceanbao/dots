@@ -8,12 +8,14 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
+vim.cmd("let g:python3_host_prog = '/usr/bin/python3'")
+
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.transparent_window = true
 -- lvim.colorscheme = "onedarker"
--- lvim.colorscheme = "codedark"
+lvim.colorscheme = "codedark"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -22,6 +24,8 @@ lvim.format_on_save = true
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["d"] = '"_d'
+lvim.keys.normal_mode["c"] = '"_c'
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -150,7 +154,7 @@ formatters.setup {
   { command = "black", filetypes = { "python" } },
   { command = "isort", filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
-  { command = "prettierd" },
+  { command = "prettierd", extra_filetypes = { "svelte" } },
   --   {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   --     command = "prettier",
@@ -184,21 +188,19 @@ local diagnosis = require "lvim.lsp.null-ls.linters"
 diagnosis.setup {
   { command = "eslint_d" },
   { command = "staticcheck", filetypes = { "go" } },
+  { command = "jsonlint", filetypes = { "json" } }
 }
 
 
 -- Additional Plugins
 lvim.plugins = {
   {
-    "lunarvim/Onedarker.nvim",
-  },
-  {
     "tomasiser/vim-code-dark",
   },
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
-      require("colorizer").setup({ "css", "scss", "html", "javascript", "typescriptreact" }, {
+      require("colorizer").setup({ "css", "scss", "html", "javascript", "typescriptreact", "svelte" }, {
         RGB = true, -- #RGB hex codes
         RRGGBB = true, -- #RRGGBB hex codes
         RRGGBBAA = true, -- #RRGGBBAA hex codes
