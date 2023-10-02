@@ -8,7 +8,7 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
-vim.cmd("let g:python3_host_prog = '/usr/bin/python3'")
+vim.cmd("let g:python3_host_prog = '/usr/local/bin/python3'")
 
 -- general
 lvim.log.level = "warn"
@@ -77,17 +77,6 @@ lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
--- indent_blankline
--- vim.opt.list = true
--- vim.opt.listchars:append "space:⋅"
--- vim.opt.listchars:append "eol:↴"
-
-require("indent_blankline").setup {
-  space_char_blankline = " ",
-  show_current_context = true,
-  show_current_context_start = true,
-}
-
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -100,8 +89,8 @@ lvim.builtin.treesitter.ensure_installed = {
   "tsx",
   "css",
   "rust",
-  "java",
   "yaml",
+  "svelte"
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
@@ -124,9 +113,10 @@ lvim.builtin.treesitter.rainbow.enable = true
 require("lvim.lsp.manager").setup("marksman")
 require("lvim.lsp.manager").setup("html")
 require("lvim.lsp.manager").setup("tailwindcss")
+require("lvim.lsp.manager").setup("svelte")
 require("lvim.lsp.manager").setup("bashls")
 require("lvim.lsp.manager").setup("rust-analyzer", {
-  formatOnSave = {
+  checkOnSave = {
     command = "clippy"
   },
 })
@@ -148,22 +138,34 @@ require("lvim.lsp.manager").setup("rust-analyzer", {
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+-- local null_ls = require("null-ls")
+
+-- local sources = {
+--   null_ls.builtins.formatting.sqlfluff.with({
+--     args = { "lint", "--disable-progress-bar", "-f", "github-annotation", "-n", "$FILENAME" },
+--     extra_args = {
+--       "--dialect", "postgres" }
+--   })
+-- }
+-- null_ls.setup({ sources = sources })
+
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
+--   {
+--     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+--     command = "prettier",
+--     ---@usage arguments to pass to the formatter
+--     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+--     extra_args = { "--print-with", "100" },
+--     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+--     filetypes = { "typescript", "typescriptreact" },
+--   },
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-  { command = "black", filetypes = { "python" } },
-  { command = "isort", filetypes = { "python" } },
+  { command = "black",    filetypes = { "python" } },
+  { command = "isort",    filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
-  { command = "prettierd", extra_filetypes = { "svelte" } },
-  --   {
-  --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
-  --     command = "prettier",
-  --     ---@usage arguments to pass to the formatter
-  --     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
-  --     extra_args = { "--print-with", "100" },
-  --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-  --     filetypes = { "typescript", "typescriptreact" },
-  --   },
+  { command = "prettier", extra_filetypes = { "svelte" } },
+  -- { command = "prettierd", },
 }
 
 -- -- set additional linters
@@ -184,13 +186,13 @@ formatters.setup {
 --   },
 -- }
 
-local diagnosis = require "lvim.lsp.null-ls.linters"
-diagnosis.setup {
-  { command = "eslint_d" },
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { command = "flake8",      filetypes = { "python" } },
+  { command = "eslint_d",    extra_filetypes = { "svelte" } },
   { command = "staticcheck", filetypes = { "go" } },
-  { command = "jsonlint", filetypes = { "json" } }
+  { command = "jsonlint",    filetypes = { "json" } },
 }
-
 
 -- Additional Plugins
 lvim.plugins = {
@@ -201,13 +203,13 @@ lvim.plugins = {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup({ "css", "scss", "html", "javascript", "typescriptreact", "svelte" }, {
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
+        RGB = true,      -- #RGB hex codes
+        RRGGBB = true,   -- #RRGGBB hex codes
         RRGGBBAA = true, -- #RRGGBBAA hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
-        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true,   -- CSS rgb() and rgba() functions
+        hsl_fn = true,   -- CSS hsl() and hsla() functions
+        css = true,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true,   -- Enable all CSS *functions*: rgb_fn, hsl_fn
       })
     end,
   },
