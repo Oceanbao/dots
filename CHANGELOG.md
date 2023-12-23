@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3] - 2023-12-23
+
+### Changed
+
+- LunarVim config updated to v0.9 with small changes
+- Add kitty config
+- Remove old
+
 ## [0.2.1] - 2022-11-18
 
 ### Fixed

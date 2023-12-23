@@ -1,6 +1,7 @@
 --[[
 lvim is the global options object
 
+curl -fsSL https://raw.githubusercontent.com/ronniedroid/getnf/master/install.sh | bash
 Linters should be
 filled in as strings with either
 a global executable or a path to
@@ -80,6 +81,8 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
+  "go",
+  "gomod",
   "c",
   "javascript",
   "json",
@@ -110,8 +113,8 @@ lvim.builtin.treesitter.rainbow.enable = true
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 -- require("lvim.lsp.manager").setup("remark_ls")
-require("lvim.lsp.manager").setup("marksman")
 require("lvim.lsp.manager").setup("html")
+-- require("lvim.lsp.manager").setup("gopls")
 require("lvim.lsp.manager").setup("tailwindcss")
 require("lvim.lsp.manager").setup("svelte")
 require("lvim.lsp.manager").setup("bashls")
@@ -161,6 +164,7 @@ require("lvim.lsp.manager").setup("rust-analyzer", {
 --   },
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
+  { command = "gofmt",    filetypes = { "go" } },
   { command = "black",    filetypes = { "python" } },
   { command = "isort",    filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
@@ -188,10 +192,10 @@ formatters.setup {
 
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8",      filetypes = { "python" } },
-  { command = "eslint_d",    extra_filetypes = { "svelte" } },
-  { command = "staticcheck", filetypes = { "go" } },
-  { command = "jsonlint",    filetypes = { "json" } },
+  { command = "golangci_lint", filetypes = { "go" } },
+  { command = "flake8",        filetypes = { "python" } },
+  { command = "eslint_d",      extra_filetypes = { "svelte" } },
+  { command = "jsonlint",      filetypes = { "json" } },
 }
 
 -- Additional Plugins
