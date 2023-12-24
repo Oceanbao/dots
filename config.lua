@@ -15,13 +15,11 @@ vim.cmd("let g:python3_host_prog = '/usr/local/bin/python3'")
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.transparent_window = true
--- lvim.colorscheme = "onedarker"
 lvim.colorscheme = "codedark"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
--- lvim.leader = "space"
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
@@ -35,7 +33,7 @@ lvim.keys.insert_mode["kj"] = "<ESC>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<leader><S-g>"] = ":Glow<CR>"
-lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm size=20 dir=. direction=horizontal<CR>"
+-- lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm size=20 dir=. direction=horizontal<CR>"
 
 -- Remap Lightspeed , to avoid leader
 vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
@@ -71,10 +69,12 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 -- TODO: User Config for predefined plugins
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.highlight.enable = true
+lvim.builtin.treesitter.playground.enable = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -98,9 +98,6 @@ lvim.builtin.treesitter.ensure_installed = {
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
-
--- nvim-ts-rainbow
-lvim.builtin.treesitter.rainbow.enable = true
 
 -- generic LSP settings
 
@@ -228,9 +225,6 @@ lvim.plugins = {
     config = function()
       require("nvim-ts-autotag").setup()
     end,
-  },
-  {
-    "p00f/nvim-ts-rainbow",
   },
   {
     "folke/lsp-colors.nvim",
