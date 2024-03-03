@@ -142,12 +142,13 @@ alias vim="lvim"
 alias ll="exa -alh --sort=size"
 alias lt="exa -bghHliS --git -T --level=2"
 alias g="git"
-alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
+alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | $(which python3) -"
 alias openports="sudo lsof -i -P -n | grep LISTEN"
 alias carr="cargo run"
 alias carc="cargo check"
 alias carb="cargo build --release"
 alias showbattery="system_profiler SPPowerDataType | egrep -i 'capacity|charge|cycle|mah'"
+alias wgett="wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 --continue --progress=dot:mega --tries=0"
 
 # Functions
 checkport() {
