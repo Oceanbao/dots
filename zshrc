@@ -21,6 +21,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # brew
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="/usr/local/sbin:$PATH"
 
 set -o vi
@@ -139,8 +140,8 @@ alias sd="sudo "
 alias ddu="du -sh * | sort -hr | head -10"
 alias pytest="pytest -l --tb=short"
 alias vim="lvim"
-alias ll="exa -alh --sort=size"
-alias lt="exa -bghHliS --git -T --level=2"
+alias ll="eza -alh --sort=size"
+alias lt="eza -bghHliS --git -T --level=2"
 alias g="git"
 alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | $(which python3) -"
 alias openports="sudo lsof -i -P -n | grep LISTEN"

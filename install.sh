@@ -275,9 +275,10 @@ install_lunarvim_config() {
 sudo ln -sfn ~/dots/config.lua ~/.config/lvim/config.lua
 
 # Plugins
-brew install fsouza/prettierd/prettierd
-pip install beautysh isort black
+npm install -g @fsouza/prettierd
 npm install -g eslint_d
+pip install beautysh isort black
+
 
 EOF
 }
@@ -311,7 +312,7 @@ install_cli() {
     sudo -i -u "$USER" bash <<'EOF'
 printf "%s\n%s\n%s\n" "$(printf "%0.1s" ={1..20})" "Installing CLI..." "$(printf "%0.1s" ={1..20})"
 
-brew install exa
+brew install eza
 brew install ripgrep
 brew install duf
 brew install bat

@@ -9,7 +9,7 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
-vim.cmd("let g:python3_host_prog = '/usr/local/bin/python3'")
+vim.cmd("let g:python3_host_prog = '/Users/dele/syspy/bin/python'")
 
 -- general
 lvim.log.level = "warn"
