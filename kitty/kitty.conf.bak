@@ -3,7 +3,7 @@
 include ayu.conf
 #include onedark.conf
 
-background_opacity 1
+background_opacity 0.9
 
 #font_family JetBrains Mono
 #bold_font JetBrains Mono Bold
@@ -21,9 +21,9 @@ background_opacity 1
 # bold_italic_font	Victor Mono Bold Italic
 # adjust_column_width	120%
 
-font_family	Fira Code
-bold_font	Fira Code Bold
-italic_font	auto
+font_family	DroidSansMono Nerd Font
+bold_font		auto
+italic_font   auto
 bold_italic_font	auto
 
 font_size 16
@@ -37,20 +37,13 @@ initial_window_width  1000
 initial_window_height 650
 enable_audio_bell no
 
-tab_bar_style slant
-
 map f1 copy_to_buffer a
 map f2 paste_from_buffer a
-map cmd+alt+1 goto_tab 1
-map cmd+alt+2 goto_tab 2
-map cmd+alt+3 goto_tab 3
-map cmd+alt+4 goto_tab 4
-map cmd+alt+5 goto_tab 5
 
 macos_option_as_alt yes
 
 
 # BEGIN_KITTY_THEME
-# Atelier Sulphurpool
+# Campbell
 include current-theme.conf
 # END_KITTY_THEME
