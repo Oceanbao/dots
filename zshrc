@@ -148,8 +148,16 @@ alias openports="sudo lsof -i -P -n | grep LISTEN"
 alias carr="cargo run"
 alias carc="cargo check"
 alias carb="cargo build --release"
-alias showbattery="system_profiler SPPowerDataType | egrep -i 'capacity|charge|cycle|mah'"
+alias showbattery="system_profiler SPPowerDataType | egrep -i 'capacity|charge|cycle|mah'; pmset -g batt"
 alias wgett="wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 --continue --progress=dot:mega --tries=0"
+alias nosleep="caffeinate -dsm"
+alias yt-dl='docker run \
+                  --rm -i \
+                  -e PGID=$(id -g) \
+                  -e PUID=$(id -u) \
+                  -v "$(pwd)":/workdir:rw \
+                  mikenye/youtube-dl'
+alias brewupdate="brew upgrade \$(brew outdated | awk '{print \$1}' | awk '{printf \"%s \", \$0} END {print \"\"}')"
 
 # Functions
 checkport() {
@@ -241,15 +249,3 @@ lsoff () {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# Wasmer
-export WASMER_DIR="/home/vagrant/.wasmer"
-[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# pnpm
-export PNPM_HOME="/Users/dele/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end

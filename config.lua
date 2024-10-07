@@ -9,13 +9,13 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
-vim.cmd("let g:python3_host_prog = '/Users/dele/syspy/bin/python'")
+vim.cmd("let g:python3_host_prog = '/Users/dele/pyenv/bin/python'")
 
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.transparent_window = true
-lvim.colorscheme = "codedark"
+lvim.colorscheme = "catppuccin"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -36,7 +36,7 @@ lvim.keys.normal_mode["<leader><S-g>"] = ":Glow<CR>"
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm size=20 dir=. direction=horizontal<CR>"
 
 -- Remap Lightspeed , to avoid leader
-vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
+-- vim.cmd("noremap <leader>,  g:lightspeed_last_motion == \'sx\' ? \"<Plug>Lightspeed_,_sx\" : \"<Plug>Lightspeed_,_ft\"")
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
@@ -72,6 +72,13 @@ lvim.builtin.which_key.mappings["t"] = {
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.treesitter.context_commentstring = nil
+-- require('ts_context_commentstring').setup {
+--   enable_autocmd = false,
+--   languages = {
+--     typescript = '// %s',
+--   },
+-- }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.highlight.enable = true
 lvim.builtin.treesitter.playground.enable = true
@@ -191,6 +198,20 @@ end)
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+-- Fix on MacOS (or just LunarVim on svelte LSP wathcing ts file change)
+lvim.lsp.on_attach_callback = function(client, bufnr)
+  if client.name == "svelte" then
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      pattern = { "*.js", "*.ts" },
+      group = vim.api.nvim_create_augroup("svelte_ondidchangetsorjsfile", { clear = true }),
+      callback = function(ctx)
+        -- Here use ctx.match instead of ctx.file
+        client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+      end,
+    })
+  end
+end
+
 -- local null_ls = require("null-ls")
 
 -- local sources = {
@@ -215,10 +236,10 @@ end)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "gofmt",    filetypes = { "go" } },
-  { command = "black",    filetypes = { "python" } },
   { command = "isort",    filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
   { command = "prettier", extra_filetypes = { "svelte" } },
+  { command = "sqlfluff", extra_args = { "--dialect", "sqlite" } },
   -- { command = "prettierd", },
 }
 
@@ -243,9 +264,9 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "golangci_lint", filetypes = { "go" } },
-  { command = "flake8",        filetypes = { "python" } },
-  { command = "eslint_d",      extra_filetypes = { "svelte" } },
+  { command = "eslint",        extra_filetypes = { "svelte" } },
   { command = "jsonlint",      filetypes = { "json" } },
+  { command = "sqlfluff",      extra_args = { "--dialect", "sqlite" } },
 }
 
 -- Additional Plugins
@@ -284,10 +305,62 @@ lvim.plugins = {
       })
     end,
   },
-  -- {"folke/tokyonight.nvim"},
   {
-    "ggandor/lightspeed.nvim",
-    event = "BufRead",
+    "folke/tokyonight.nvim",
+    opts = { style = "moon" },
+  },
+  { "ellisonleao/gruvbox.nvim" },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    opts = {
+      integrations = {
+        aerial = true,
+        alpha = true,
+        cmp = true,
+        dashboard = true,
+        flash = true,
+        gitsigns = true,
+        headlines = true,
+        illuminate = true,
+        indent_blankline = { enabled = true },
+        leap = true,
+        lsp_trouble = true,
+        mason = true,
+        markdown = true,
+        mini = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
+          },
+        },
+        navic = { enabled = true, custom_bg = "lualine" },
+        neotest = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        semantic_tokens = true,
+        telescope = true,
+        treesitter = true,
+        treesitter_context = true,
+        which_key = true,
+      },
+    },
+  },
+  -- {
+  --   "ggandor/lightspeed.nvim",
+  --   event = "BufRead",
+  -- },
+  {
+    "ggandor/leap.nvim",
+    name = "leap",
+    config = function()
+      require("leap").add_default_mappings()
+    end,
   },
   {
     "windwp/nvim-ts-autotag",
