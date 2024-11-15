@@ -236,7 +236,6 @@ end
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "gofmt",    filetypes = { "go" } },
-  { command = "isort",    filetypes = { "python" } },
   { command = "beautysh", filetypes = { "bash", "sh" } },
   { command = "prettier", extra_filetypes = { "svelte" } },
   { command = "sqlfluff", extra_args = { "--dialect", "sqlite" } },
@@ -264,7 +263,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "golangci_lint", filetypes = { "go" } },
-  { command = "eslint",        extra_filetypes = { "svelte" } },
+  -- { command = "eslint",        extra_filetypes = { "svelte" } },
   { command = "jsonlint",      filetypes = { "json" } },
   { command = "sqlfluff",      extra_args = { "--dialect", "sqlite" } },
 }

@@ -5,16 +5,20 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# z.sh
-. ~/dots/z.sh
+set -o vi
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+export PATH=$HOME/.npm-global/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 # GOPATH
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
-
-# NVN
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -23,16 +27,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="/usr/local/sbin:$PATH"
-
-set -o vi
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-export PATH=$HOME/.npm-global/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -98,18 +92,15 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-lazyload)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-export EDITOR='lvim'
-# export MANPATH="/usr/local/man:$MANPATH"
+# ------------------
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-ulimit -n 12000
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -120,6 +111,11 @@ ulimit -n 12000
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+
+export EDITOR='lvim'
+# export MANPATH="/usr/local/man:$MANPATH"
+
+ulimit -n 12000
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -238,8 +234,6 @@ lsoff () {
 
 # export TERM=xterm-256color
 
-# export PUPP_CHROME="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-
 # set DISPLAY variable to the IP automatically assigned to WSL2
 # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 # auto start dbus
@@ -249,3 +243,12 @@ lsoff () {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# NVN
+# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+lazyload nvm -- 'export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm'
+
+# z.sh
+. ~/dots/z.sh
