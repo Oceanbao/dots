@@ -19,6 +19,13 @@ lvim.colorscheme = "catppuccin"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
+-- Auto-wrap line
+vim.opt.wrap = true
+vim.opt.textwidth = 0
+vim.opt.wrapmargin = 1
+-- vim.opt.formatoptions += t
+-- vim.opt.formatoptions -= l
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = ","
 -- add your own keymapping
